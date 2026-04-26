@@ -20,7 +20,7 @@ Không dùng tên "chị Châu" ở bất kỳ đâu trên website. Tên pháp n
 
 **Dịch vụ là tư vấn để yên tâm, không phải dịch vụ "nghe tiếng Việt".** Đừng viết lại điều này theo hướng tiếng Việt là điểm bán hàng chính. Ngôn ngữ là môi trường, không phải sản phẩm.
 
-**Màu sắc: hồng nhạt, trắng ấm, sạch.** `--color-rose: #D4849A`, `--color-bg: #FFF6F8`, `--color-rose-pale: #FCE8EE`. Font: Playfair Display 600/700 cho tiêu đề, Inter 400/500 cho body.
+**Màu sắc: hồng nhạt, trắng ấm, sạch.** `--color-rose: #D4849A`, `--color-bg: #FFF6F8`, `--color-rose-pale: #FCE8EE`. Font: Montserrat 600/700 cho tiêu đề, Be Vietnam Pro 400/500/600 cho body.
 
 **Giá theo khung Mỹ (USD).** Tối thiểu $20/10 phút theo quy định. Tư vấn chuyên sâu có thể lên đến $600/giờ. Cần hiển thị giá minh bạch để tránh shock.
 
@@ -30,23 +30,32 @@ Không dùng tên "chị Châu" ở bất kỳ đâu trên website. Tên pháp n
 
 **Không dùng dấu gạch nối (—) hay dash bullet points** vì trông như AI viết. Viết văn xuôi tự nhiên.
 
+**Chưa có Calendly.** Trang services.html tạm dùng form liên hệ thay vì nút Calendly. Bổ sung sau khi có tài khoản.
+
+## Hạ tầng đã deploy
+
+- **GitHub:** github.com/SoulWarmer/soulwarmer
+- **Netlify:** zesty-sherbet-869e72.netlify.app
+- **Admin CMS:** zesty-sherbet-869e72.netlify.app/admin (email: soulwarmerpodcast@gmail.com)
+- Netlify Identity đã bật, Git Gateway đã bật, user admin đã tạo
+
 ## Cấu trúc hiện tại
 
 ```
 soulwarmer/
-├── index.html              ← Landing page (đã xong)
+├── index.html              ← Landing page (đã xong, có block 3 bài mới nhất)
 ├── post.html               ← Trang đọc bài viết đơn lẻ (đã xong)
 ├── css/style.css           ← Design system (đã xong)
-├── js/main.js              ← Menu mobile, form handlers (đã xong)
-├── admin/                  ← Decap CMS (đã xong)
+├── js/main.js              ← Menu mobile, scroll animation, form handlers (đã xong)
+├── admin/                  ← Decap CMS (đã xong, hoạt động)
 │   ├── index.html
 │   └── config.yml
 ├── netlify.toml            ← Build command: node scripts/build-posts.js (đã xong)
 ├── scripts/build-posts.js  ← Tạo data/posts.json từ posts/*.md (đã xong)
 ├── data/posts.json         ← Manifest bài viết (đã xong)
-├── posts/                  ← File markdown bài viết
+├── posts/                  ← File markdown bài viết (có 1 bài mẫu)
 └── pages/
-    ├── content-hub.html    ← Trang danh sách bài (đã xong)
+    ├── content-hub.html    ← Trang danh sách bài, filter theo chủ đề (đã xong)
     ├── about.html          ← CHƯA LÀM
     ├── services.html       ← CHƯA LÀM
     └── contact.html        ← CHƯA LÀM
@@ -54,13 +63,15 @@ soulwarmer/
 
 ## Bước tiếp theo (theo thứ tự ưu tiên)
 
-1. **`pages/services.html`** — trang dịch vụ và đặt lịch, tạo ra doanh thu trực tiếp. Gồm 2 gói (phiên lẻ 45' và gói 4 buổi), giá USD, intake form, nút đặt lịch qua Calendly.
+1. **`pages/services.html`** — trang dịch vụ và đặt lịch, tạo ra doanh thu trực tiếp. Gồm 2 gói (phiên lẻ 45' và gói 4 buổi), giá USD, intake form. Tạm dùng form liên hệ vì chưa có Calendly.
 
-2. **`pages/about.html`** — bio chị Châu viết sâu, không có ảnh. Kể câu chuyện thật: chị là ai, tại sao làm điều này, trải nghiệm sống ở Mỹ với con.
+2. **`pages/about.html`** — bio viết sâu, không có ảnh. Kể câu chuyện thật: chị là ai, tại sao làm điều này, trải nghiệm sống ở Mỹ với con.
 
 3. **`pages/contact.html`** — form liên hệ + lead magnet (Checklist 72h đầu miễn phí, nhận qua email).
 
-4. **Deploy** — hướng dẫn tạo GitHub repo, kết nối Netlify, bật Netlify Identity để dùng Decap CMS.
+4. **Custom domain** — đổi từ zesty-sherbet-869e72.netlify.app sang domain riêng.
+
+5. **Calendly** — khi có tài khoản, gắn link vào services.html.
 
 ## Lưu ý khi viết content
 
