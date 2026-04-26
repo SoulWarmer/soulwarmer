@@ -216,6 +216,22 @@
     </div>
   </section>
 
+  <!-- ========== LATEST POSTS ========== -->
+  <section class="latest-posts">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-label">Góc chia sẻ</p>
+          <h2>Bài viết mới nhất</h2>
+        </div>
+        <a href="pages/content-hub.html" class="btn btn-outline">Xem tất cả →</a>
+      </div>
+      <div class="posts-grid-home" id="homePostsGrid">
+        <div class="posts-loading">Đang tải...</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== LEAD MAGNET ========== -->
   <section class="lead-magnet">
     <div class="container">
@@ -262,6 +278,31 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script>
+    const categoryLabels = {
+      'soc-van-hoa': 'Sốc văn hóa',
+      'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
+      'ban-do-thich-nghi': 'Bản đồ thích nghi',
+      'quan-tri-noi-lo': 'Quản trị nỗi lo',
+      'tinh-huong-kho': 'Tình huống khó'
+    };
+    fetch('data/posts.json')
+      .then(r => r.json())
+      .then(posts => {
+        const grid = document.getElementById('homePostsGrid');
+        const latest = posts.slice(0, 3);
+        if (!latest.length) { grid.innerHTML = '<p class="posts-loading">Chưa có bài viết.</p>'; return; }
+        grid.innerHTML = latest.map(p => `
+          <div class="post-card-home fade-up">
+            <span class="tag">${categoryLabels[p.category] || ''}</span>
+            <div class="title">${p.title}</div>
+            <div class="summary">${p.summary || ''}</div>
+            <a href="post.html?slug=${p.slug}" class="read-more">Đọc tiếp →</a>
+          </div>`).join('');
+        document.querySelectorAll('.post-card-home').forEach(el => observer.observe(el));
+      })
+      .catch(() => {});
+  </script>
   <script>
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", function(user) {
