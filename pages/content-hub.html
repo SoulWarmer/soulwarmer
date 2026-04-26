@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tài nguyên — SoulWarmer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .hub-hero { padding: 64px 24px 48px; background: linear-gradient(160deg, #FFF6F8 0%, #FCEEF3 100%); text-align: center; }
+    .hub-hero h1 { max-width: 600px; margin: 0 auto 12px; }
+    .hub-hero p { max-width: 500px; margin: 0 auto; font-size: 0.95rem; }
+
+    .hub-body { padding: 56px 24px 80px; }
+
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; justify-content: center; }
+    .filter-btn {
+      padding: 7px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--color-border);
+      background: white;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--color-text-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--color-rose); color: var(--color-rose); }
+    .filter-btn.active { background: var(--color-rose); border-color: var(--color-rose); color: white; }
+
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .post-card {
+      background: white;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .post-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+    .post-card-body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .post-card-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-rose); margin-bottom: 10px; }
+    .post-card-title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; color: var(--color-text); line-height: 1.35; margin-bottom: 10px; }
+    .post-card-summary { font-size: 0.875rem; color: var(--color-text-soft); line-height: 1.65; flex: 1; }
+    .post-card-footer { padding: 14px 24px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; }
+    .post-card-date { font-size: 0.76rem; color: #bbb; }
+    .post-card-link { font-size: 0.8rem; font-weight: 600; color: var(--color-rose); }
+    .post-card-link:hover { text-decoration: underline; }
+
+    .posts-empty { text-align: center; padding: 60px 24px; color: var(--color-text-soft); grid-column: 1/-1; }
+
+    @media (max-width: 900px) { .posts-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .posts-grid { grid-template-columns: 1fr; } .filter-bar { justify-content: flex-start; } }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">SoulWarmer</a>
+      <nav class="nav-links">
+        <a href="about.html">Về chúng tôi</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="content-hub.html" style="color:var(--color-rose)">Tài nguyên</a>
+        <a href="contact.html">Liên hệ</a>
+        <a href="services.html" class="btn btn-primary">Đặt lịch ngay</a>
+      </nav>
+      <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="mobileMenu">
+      <a href="about.html">Về chúng tôi</a>
+      <a href="services.html">Dịch vụ</a>
+      <a href="content-hub.html">Tài nguyên</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+  </header>
+
+  <section class="hub-hero">
+    <div class="container">
+      <p class="section-label">Tài nguyên</p>
+      <h1>Bài viết & Góc chia sẻ</h1>
+      <p>Những quan sát thực tế về hành trình thích nghi, dành cho người đang đi qua và người đang dõi theo từ xa.</p>
+    </div>
+  </section>
+
+  <section class="hub-body">
+    <div class="container">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-cat="all">Tất cả</button>
+        <button class="filter-btn" data-cat="soc-van-hoa">Sốc văn hóa</button>
+        <button class="filter-btn" data-cat="ngon-ngu-ket-noi">Ngôn ngữ kết nối</button>
+        <button class="filter-btn" data-cat="ban-do-thich-nghi">Bản đồ thích nghi</button>
+        <button class="filter-btn" data-cat="quan-tri-noi-lo">Quản trị nỗi lo</button>
+        <button class="filter-btn" data-cat="tinh-huong-kho">Tình huống khó</button>
+      </div>
+      <div class="posts-grid" id="postsGrid">
+        <div class="posts-empty">Đang tải bài viết...</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">SoulWarmer</span>
+        <p>Dịch vụ tư vấn và đồng hành cho du học sinh, người Việt xa nhà và gia đình của họ.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Điều hướng</h5>
+        <ul>
+          <li><a href="about.html">Về chúng tôi</a></li>
+          <li><a href="services.html">Dịch vụ</a></li>
+          <li><a href="content-hub.html">Tài nguyên</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Kết nối</h5>
+        <ul>
+          <li><a href="#">Zalo</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 SoulWarmer.</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    const categoryLabels = {
+      'soc-van-hoa': 'Sốc văn hóa',
+      'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
+      'ban-do-thich-nghi': 'Bản đồ thích nghi',
+      'quan-tri-noi-lo': 'Quản trị nỗi lo',
+      'tinh-huong-kho': 'Tình huống khó'
+    };
+
+    function formatDate(d) {
+      return new Date(d).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function renderPosts(posts) {
+      const grid = document.getElementById('postsGrid');
+      if (!posts.length) {
+        grid.innerHTML = '<div class="posts-empty">Chưa có bài viết trong mục này.</div>';
+        return;
+      }
+      grid.innerHTML = posts.map(p => `
+        <div class="post-card" data-cat="${p.category || ''}">
+          <div class="post-card-body">
+            <div class="post-card-tag">${categoryLabels[p.category] || p.category || ''}</div>
+            <div class="post-card-title">${p.title}</div>
+            <div class="post-card-summary">${p.summary || ''}</div>
+          </div>
+          <div class="post-card-footer">
+            <span class="post-card-date">${formatDate(p.date)}</span>
+            <a href="../post.html?slug=${p.slug}" class="post-card-link">Đọc tiếp →</a>
+          </div>
+        </div>`).join('');
+    }
+
+    let allPosts = [];
+
+    fetch('../data/posts.json')
+      .then(r => r.json())
+      .then(posts => {
+        allPosts = posts;
+        renderPosts(allPosts);
+      })
+      .catch(() => {
+        document.getElementById('postsGrid').innerHTML = '<div class="posts-empty">Chưa có bài viết nào.</div>';
+      });
+
+    document.getElementById('filterBar').addEventListener('click', e => {
+      const btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      renderPosts(cat === 'all' ? allPosts : allPosts.filter(p => p.category === cat));
+    });
+  </script>
+</body>
+</html>

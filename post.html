@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bài viết — SoulWarmer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .post-hero { padding: 64px 24px 40px; background: linear-gradient(160deg, #FFF6F8 0%, #FCEEF3 100%); }
+    .post-meta { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .post-tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-rose); background: var(--color-rose-pale); padding: 4px 12px; border-radius: 20px; }
+    .post-date { font-size: 0.8rem; color: #bbb; }
+    .post-hero h1 { max-width: 760px; font-size: clamp(1.8rem, 4vw, 2.8rem); }
+    .post-summary { max-width: 680px; font-size: 1.05rem; margin-top: 14px; color: var(--color-text-soft); font-style: italic; }
+    .post-body { max-width: 720px; margin: 0 auto; padding: 56px 24px 80px; }
+    .post-body p { color: var(--color-text-soft); line-height: 1.85; margin-bottom: 20px; }
+    .post-body h2 { font-size: 1.5rem; margin: 36px 0 12px; color: var(--color-text); }
+    .post-body h3 { font-size: 1.2rem; margin: 28px 0 10px; color: var(--color-text); }
+    .post-body strong { color: var(--color-text); font-weight: 600; }
+    .post-body ul, .post-body ol { padding-left: 24px; margin-bottom: 20px; }
+    .post-body li { color: var(--color-text-soft); line-height: 1.75; margin-bottom: 6px; }
+    .post-body blockquote { border-left: 3px solid var(--color-rose-light); padding: 12px 20px; margin: 24px 0; background: var(--color-rose-pale); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    .post-body blockquote p { color: var(--color-text); font-style: italic; margin: 0; }
+    .post-back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; color: var(--color-rose); margin-bottom: 32px; }
+    .post-back:hover { text-decoration: underline; }
+    .post-loading { text-align: center; padding: 80px 24px; color: var(--color-text-soft); }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">SoulWarmer</a>
+      <nav class="nav-links">
+        <a href="pages/about.html">Về chúng tôi</a>
+        <a href="pages/services.html">Dịch vụ</a>
+        <a href="pages/content-hub.html">Tài nguyên</a>
+        <a href="pages/contact.html">Liên hệ</a>
+        <a href="pages/services.html" class="btn btn-primary">Đặt lịch ngay</a>
+      </nav>
+      <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="mobileMenu">
+      <a href="pages/about.html">Về chúng tôi</a>
+      <a href="pages/services.html">Dịch vụ</a>
+      <a href="pages/content-hub.html">Tài nguyên</a>
+      <a href="pages/contact.html">Liên hệ</a>
+    </nav>
+  </header>
+
+  <div id="postContent">
+    <div class="post-loading">Đang tải bài viết...</div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">SoulWarmer</span>
+        <p>Dịch vụ tư vấn và đồng hành cho du học sinh, người Việt xa nhà và gia đình của họ.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Điều hướng</h5>
+        <ul>
+          <li><a href="pages/about.html">Về chúng tôi</a></li>
+          <li><a href="pages/services.html">Dịch vụ</a></li>
+          <li><a href="pages/content-hub.html">Tài nguyên</a></li>
+          <li><a href="pages/contact.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Kết nối</h5>
+        <ul>
+          <li><a href="#">Zalo</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 SoulWarmer.</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const categoryLabels = {
+      'soc-van-hoa': 'Sốc văn hóa',
+      'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
+      'ban-do-thich-nghi': 'Bản đồ thích nghi',
+      'quan-tri-noi-lo': 'Quản trị nỗi lo',
+      'tinh-huong-kho': 'Tình huống khó'
+    };
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function parseFrontmatter(text) {
+      const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+      if (!match) return { body: text, meta: {} };
+      const meta = {};
+      match[1].split('\n').forEach(line => {
+        const colon = line.indexOf(':');
+        if (colon === -1) return;
+        const key = line.slice(0, colon).trim();
+        const val = line.slice(colon + 1).trim().replace(/^["']|["']$/g, '');
+        meta[key] = val;
+      });
+      return { meta, body: match[2].trim() };
+    }
+
+    async function loadPost() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+      if (!slug) { window.location.href = 'pages/content-hub.html'; return; }
+
+      try {
+        const res = await fetch(`posts/${slug}.md`);
+        if (!res.ok) throw new Error('Không tìm thấy bài viết');
+        const text = await res.text();
+        const { meta, body } = parseFrontmatter(text);
+
+        document.title = `${meta.title || 'Bài viết'} — SoulWarmer`;
+        document.getElementById('postContent').innerHTML = `
+          <section class="post-hero">
+            <div class="container">
+              <a href="pages/content-hub.html" class="post-back">← Tất cả bài viết</a>
+              <div class="post-meta">
+                ${meta.category ? `<span class="post-tag">${categoryLabels[meta.category] || meta.category}</span>` : ''}
+                ${meta.date ? `<span class="post-date">${formatDate(meta.date)}</span>` : ''}
+              </div>
+              <h1>${meta.title || ''}</h1>
+              ${meta.summary ? `<p class="post-summary">${meta.summary}</p>` : ''}
+            </div>
+          </section>
+          <article class="post-body">
+            ${marked.parse(body)}
+          </article>`;
+      } catch (e) {
+        document.getElementById('postContent').innerHTML = `
+          <div class="post-loading">
+            <p>Không tìm thấy bài viết này.</p>
+            <a href="pages/content-hub.html" class="btn btn-outline" style="margin-top:16px">Xem tất cả bài viết</a>
+          </div>`;
+      }
+    }
+
+    loadPost();
+  </script>
+</body>
+</html>

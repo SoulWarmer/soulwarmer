@@ -1,0 +1,9 @@
+[build]
+  command = "node scripts/build-posts.js"
+  publish = "."
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"

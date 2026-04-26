@@ -1,0 +1,30 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+locale: vi
+
+collections:
+  - name: "posts"
+    label: "Bài viết"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Tiêu đề", name: "title", widget: "string" }
+      - { label: "Ngày đăng", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - label: "Chủ đề"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Sốc văn hóa", value: "soc-van-hoa" }
+          - { label: "Ngôn ngữ kết nối", value: "ngon-ngu-ket-noi" }
+          - { label: "Bản đồ thích nghi", value: "ban-do-thich-nghi" }
+          - { label: "Quản trị nỗi lo", value: "quan-tri-noi-lo" }
+          - { label: "Tình huống khó", value: "tinh-huong-kho" }
+      - { label: "Tóm tắt", name: "summary", widget: "text", hint: "Hiện trên trang danh sách bài viết" }
+      - { label: "Ảnh bìa", name: "thumbnail", widget: "image", required: false }
+      - { label: "Nội dung", name: "body", widget: "markdown" }
