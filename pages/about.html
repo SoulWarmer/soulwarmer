@@ -216,17 +216,16 @@
 <body>
 
   <!-- NAV -->
-  <nav class="nav" id="navbar">
-    <div class="nav-inner container">
+  <header class="nav">
+    <div class="nav-inner">
       <a href="../index.html" class="nav-logo">SoulWarmer</a>
-      <ul class="nav-links">
-        <li><a href="../index.html">Trang chủ</a></li>
-        <li><a href="services.html">Dịch vụ</a></li>
-        <li><a href="about.html" class="active">Về chúng tôi</a></li>
-        <li><a href="content-hub.html">Góc chia sẻ</a></li>
-        <li><a href="contact.html">Liên hệ</a></li>
-        <li><a href="services.html" class="btn btn-primary" style="padding:10px 22px;font-size:0.85rem;">Đặt lịch tư vấn</a></li>
-      </ul>
+      <nav class="nav-links">
+        <a href="about.html" style="color:var(--color-rose)">Về chúng tôi</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="content-hub.html">Tài nguyên</a>
+        <a href="contact.html">Liên hệ</a>
+        <a href="services.html" class="btn btn-primary">Đặt lịch tư vấn</a>
+      </nav>
       <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
         <span></span><span></span><span></span>
       </button>
@@ -239,7 +238,7 @@
       <a href="contact.html">Liên hệ</a>
       <a href="services.html" class="btn btn-primary" style="text-align:center">Đặt lịch tư vấn</a>
     </nav>
-  </nav>
+  </header>
 
   <!-- HERO -->
   <section class="about-hero">
@@ -389,13 +388,13 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="container footer-inner">
+    <div class="footer-inner">
       <div class="footer-brand">
-        <div class="footer-logo">SoulWarmer</div>
+        <span class="footer-logo">SoulWarmer</span>
         <p>Đồng hành cùng người Việt trên hành trình xa nhà.</p>
       </div>
-      <div class="footer-links">
-        <h4>Trang</h4>
+      <div class="footer-col">
+        <h5>Trang</h5>
         <ul>
           <li><a href="../index.html">Trang chủ</a></li>
           <li><a href="services.html">Dịch vụ</a></li>
@@ -404,8 +403,8 @@
           <li><a href="contact.html">Liên hệ</a></li>
         </ul>
       </div>
-      <div class="footer-links">
-        <h4>Dịch vụ</h4>
+      <div class="footer-col">
+        <h5>Dịch vụ</h5>
         <ul>
           <li><a href="services.html">Phiên nhanh 10 phút</a></li>
           <li><a href="services.html">Tư vấn chuyên sâu 45 phút</a></li>
@@ -413,8 +412,9 @@
         </ul>
       </div>
     </div>
-    <div class="footer-bottom container">
-      <p>© 2025 SoulWarmer. Mọi quyền được bảo lưu.</p>
+    <div class="footer-bottom">
+      <span>© 2025 SoulWarmer. Mọi quyền được bảo lưu.</span>
+      <span>Made with care, for people far from home.</span>
     </div>
   </footer>
 
