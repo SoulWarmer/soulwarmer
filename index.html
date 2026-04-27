@@ -299,7 +299,7 @@
             <div class="summary">${p.summary || ''}</div>
             <a href="post.html?slug=${p.slug}" class="read-more">Đọc tiếp →</a>
           </div>`).join('');
-        document.querySelectorAll('.post-card-home').forEach(el => observer.observe(el));
+        if (window.observeFadeUp) window.observeFadeUp();
       })
       .catch(() => {});
   </script>
