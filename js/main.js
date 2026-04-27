@@ -53,3 +53,7 @@ document.querySelectorAll(FADE_SELECTORS).forEach(el => {
   el.classList.add('fade-up');
   observer.observe(el);
 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  observer.observe(el);
+});
