@@ -8,6 +8,7 @@ summary: >-
   Dành cho du học sinh, người mới định cư và gia đình mới đến
 
   Hãy ưu tiên những việc căn bản nhất: an toàn, liên lạc, chỗ ở, giấy tờ, tiền bạc, di chuyển và sức khỏe.
+thumbnail: bfbb9a9f-7efb-4fcb-83ac-463b6f0d48aa.jpg
 ---
 
 
