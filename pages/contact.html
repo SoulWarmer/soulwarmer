@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liên hệ — SoulWarmer</title>
+  <meta name="description" content="Kết nối với SoulWarmer qua Facebook, YouTube, TikTok hoặc email. Luôn có người lắng nghe." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .contact-hero {
+      padding: 72px 24px 56px;
+      background: linear-gradient(160deg, #FFF6F8 0%, #FCEEF3 100%);
+      text-align: center;
+    }
+    .contact-hero .label {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--color-rose);
+      margin-bottom: 16px;
+    }
+    .contact-hero h1 { max-width: 560px; margin: 0 auto 20px; }
+    .contact-hero .lead {
+      max-width: 480px;
+      margin: 0 auto;
+      font-size: 1rem;
+      color: var(--color-text-soft);
+      line-height: 1.75;
+    }
+
+    .channels-section {
+      padding: var(--section-pad);
+      background: var(--color-white);
+    }
+    .channels-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 780px;
+      margin: 48px auto 0;
+    }
+    .channel-card {
+      background: var(--color-bg);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      text-decoration: none;
+    }
+    .channel-card:hover {
+      border-color: var(--color-rose);
+      box-shadow: 0 4px 24px rgba(212,132,154,0.15);
+    }
+    .channel-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .channel-icon svg { width: 26px; height: 26px; }
+    .channel-icon.fb   { background: #e7f0ff; }
+    .channel-icon.yt   { background: #ffe8e8; }
+    .channel-icon.tt   { background: #e8f8ff; }
+    .channel-icon.mail { background: #fff0e8; }
+
+    .channel-name {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .channel-handle {
+      font-size: 0.875rem;
+      color: var(--color-text-soft);
+    }
+    .channel-arrow {
+      margin-top: auto;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-rose);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contact-cta {
+      padding: 72px 24px;
+      background: linear-gradient(160deg, #FFF6F8 0%, #FCEEF3 100%);
+      text-align: center;
+    }
+    .contact-cta h2 { max-width: 480px; margin: 0 auto 16px; }
+    .contact-cta p  { max-width: 400px; margin: 0 auto 32px; color: var(--color-text-soft); font-size: 0.97rem; line-height: 1.7; }
+
+    @media (max-width: 640px) {
+      .channels-grid { grid-template-columns: 1fr; }
+      .channel-card  { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">SoulWarmer</a>
+      <nav class="nav-links">
+        <a href="about.html">Về chúng tôi</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="content-hub.html">Tài nguyên</a>
+        <a href="contact.html" style="color:var(--color-rose)">Liên hệ</a>
+        <a href="services.html" class="btn btn-primary">Đặt lịch tư vấn</a>
+      </nav>
+      <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="mobileMenu">
+      <a href="../index.html">Trang chủ</a>
+      <a href="services.html">Dịch vụ</a>
+      <a href="about.html">Về chúng tôi</a>
+      <a href="content-hub.html">Góc chia sẻ</a>
+      <a href="contact.html">Liên hệ</a>
+      <a href="services.html" class="btn btn-primary" style="text-align:center">Đặt lịch tư vấn</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="contact-hero">
+    <p class="label">Liên hệ</p>
+    <h1>Luôn có chỗ để bạn ghé qua</h1>
+    <p class="lead">Theo dõi SoulWarmer để không bỏ lỡ nội dung mới, hoặc nhắn thẳng nếu bạn có câu hỏi.</p>
+  </section>
+
+  <!-- CHANNELS -->
+  <section class="channels-section">
+    <div class="container">
+      <p class="section-label" style="text-align:center">Kênh liên lạc</p>
+      <h2 style="text-align:center; max-width:420px; margin:8px auto 0;">Tìm SoulWarmer ở đây</h2>
+
+      <div class="channels-grid">
+
+        <a class="channel-card fade-up" href="https://www.facebook.com/soulwarmerpodcast" target="_blank" rel="noopener">
+          <div class="channel-icon fb">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="#1877F2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="channel-name">Facebook</div>
+          <div class="channel-handle">SoulWarmer Podcast</div>
+          <div class="channel-arrow">Xem trang <span>→</span></div>
+        </a>
+
+        <a class="channel-card fade-up" href="https://www.youtube.com/@SoulWarmerPodcast" target="_blank" rel="noopener">
+          <div class="channel-icon yt">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.54 6.42C22.4212 5.94541 22.1793 5.51057 21.8387 5.15941C21.498 4.80824 21.0708 4.55318 20.6 4.42C18.88 4 12 4 12 4C12 4 5.12 4 3.4 4.46C2.92925 4.59318 2.50198 4.84824 2.16135 5.19941C1.82072 5.55057 1.57879 5.98541 1.46 6.46C1.14521 8.20556 0.991235 9.97631 1 11.75C0.988787 13.537 1.14277 15.3213 1.46 17.08C1.59096 17.5398 1.83831 17.9581 2.17814 18.2945C2.51798 18.6308 2.93882 18.8738 3.4 19C5.12 19.46 12 19.46 12 19.46C12 19.46 18.88 19.46 20.6 19C21.0708 18.8668 21.498 18.6118 21.8387 18.2606C22.1793 17.9094 22.4212 17.4746 22.54 17C22.8524 15.2676 23.0063 13.5103 23 11.75C23.0112 9.96295 22.8573 8.1787 22.54 6.42Z" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.75 15.02L15.5 11.75L9.75 8.48V15.02Z" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="channel-name">YouTube</div>
+          <div class="channel-handle">@SoulWarmerPodcast</div>
+          <div class="channel-arrow">Xem kênh <span>→</span></div>
+        </a>
+
+        <a class="channel-card fade-up" href="https://www.tiktok.com/@soul_warmer_podcast" target="_blank" rel="noopener">
+          <div class="channel-icon tt">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12C7.34315 12 6 13.3431 6 15C6 16.6569 7.34315 18 9 18C10.6569 18 12 16.6569 12 15V3C12.6667 5 14.4 9 18 9" stroke="#010101" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="channel-name">TikTok</div>
+          <div class="channel-handle">@soul_warmer_podcast</div>
+          <div class="channel-arrow">Xem video <span>→</span></div>
+        </a>
+
+        <a class="channel-card fade-up" href="mailto:soulwarmerpodcast@gmail.com">
+          <div class="channel-icon mail">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="#E8761A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 6L12 13L2 6" stroke="#E8761A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="channel-name">Email</div>
+          <div class="channel-handle">soulwarmerpodcast@gmail.com</div>
+          <div class="channel-arrow">Gửi email <span>→</span></div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="contact-cta">
+    <div class="fade-up">
+      <h2>Sẵn sàng đặt lịch nói chuyện?</h2>
+      <p>Một buổi trao đổi ngắn đôi khi đủ để gỡ được những thắc mắc đang chồng chất.</p>
+      <a href="services.html" class="btn btn-primary">Xem gói tư vấn</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">SoulWarmer</span>
+        <p>Đồng hành cùng người Việt trên hành trình xa nhà.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Trang</h5>
+        <ul>
+          <li><a href="../index.html">Trang chủ</a></li>
+          <li><a href="services.html">Dịch vụ</a></li>
+          <li><a href="about.html">Về chúng tôi</a></li>
+          <li><a href="content-hub.html">Góc chia sẻ</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Dịch vụ</h5>
+        <ul>
+          <li><a href="services.html">Phiên nhanh 10 phút</a></li>
+          <li><a href="services.html">Tư vấn chuyên sâu 45 phút</a></li>
+          <li><a href="services.html">Gift card</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 SoulWarmer. Mọi quyền được bảo lưu.</span>
+      <span>Made with care, for people far from home.</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
