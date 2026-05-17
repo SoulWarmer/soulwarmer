@@ -233,12 +233,12 @@
             <input type="radio" name="package" id="pkg10" value="10p-20usd" class="pkg-option" required />
             <label for="pkg10" class="pkg-label">
               <span class="pkg-name">Hỏi nhanh 10 phút</span>
-              <span class="pkg-price">$20 / buổi</span>
+              <span class="pkg-price">530.000đ</span>
             </label>
             <input type="radio" name="package" id="pkg45" value="45p-49usd" class="pkg-option" />
             <label for="pkg45" class="pkg-label">
               <span class="pkg-name">Tư vấn đầy đủ 45 phút</span>
-              <span class="pkg-price">$49 / buổi</span>
+              <span class="pkg-price">1.300.000đ</span>
             </label>
           </div>
         </div>
@@ -277,11 +277,23 @@
           <textarea placeholder="Viết ngắn gọn cũng được. Chúng tôi đọc kỹ trước khi liên hệ lại." rows="4" required></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%">Gửi yêu cầu đặt lịch</button>
-        <p class="form-note">Không cần thanh toán trước. Chúng tôi xác nhận lịch trước, hướng dẫn thanh toán sau.</p>
+        <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Thanh toán ngay</button>
+        <p class="form-note">Thanh toán an toàn qua PayOS. QR hiện ngay sau khi bấm.</p>
       </form>
     </div>
   </section>
+
+  <!-- Modal QR thanh toán -->
+  <div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:20px; padding:40px 32px; max-width:360px; width:90%; text-align:center; position:relative;">
+      <button onclick="closePaymentModal()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.6rem; cursor:pointer; color:#aaa; line-height:1;">×</button>
+      <p id="modalPkg" style="color:var(--color-rose); font-weight:600; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;"></p>
+      <p id="modalAmount" style="font-size:1.8rem; font-weight:700; color:var(--color-text); margin-bottom:24px;"></p>
+      <img id="modalQR" src="" alt="QR thanh toán" style="width:200px; height:200px; margin:0 auto 20px; display:block; border-radius:8px;" />
+      <p style="font-size:0.85rem; color:#888; margin-bottom:20px;">Quét QR bằng app ngân hàng để thanh toán</p>
+      <a id="modalLink" href="#" target="_blank" class="btn btn-primary" style="display:block;">Mở trang thanh toán</a>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -320,13 +332,42 @@
       document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth' });
     }
 
-    document.getElementById('servicesForm').addEventListener('submit', function(e) {
+    document.getElementById('servicesForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const btn = this.querySelector('button[type="submit"]');
-      btn.textContent = 'Đã gửi. Chúng tôi sẽ liên hệ sớm.';
+      const pkgInput = document.querySelector('input[name="package"]:checked');
+      if (!pkgInput) { alert('Vui lòng chọn gói tư vấn'); return; }
+      const packageId = pkgInput.value === '10p-20usd' ? '10p' : '45p';
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Đang tạo thanh toán...';
       btn.disabled = true;
-      btn.style.background = '#a0a0a0';
+      try {
+        const res = await fetch('/api/create-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ packageId })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('modalPkg').textContent = data.display;
+          document.getElementById('modalAmount').textContent = data.amount.toLocaleString('vi-VN') + 'đ';
+          document.getElementById('modalQR').src = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(data.qrCode) + '&size=200x200';
+          document.getElementById('modalLink').href = data.checkoutUrl;
+          const modal = document.getElementById('paymentModal');
+          modal.style.display = 'flex';
+        } else {
+          alert('Lỗi: ' + (data.error || 'Vui lòng thử lại'));
+        }
+      } catch (err) {
+        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+      } finally {
+        btn.textContent = 'Thanh toán ngay';
+        btn.disabled = false;
+      }
     });
+
+    function closePaymentModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
   </script>
 </body>
 </html>
