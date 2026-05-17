@@ -2,7 +2,7 @@
 
 ## Dự án là gì
 
-SoulWarmer là website dịch vụ tư vấn tâm lý và đồng hành của chị Châu, một người Việt đang sống ở Mỹ cùng con. Dịch vụ nhắm đến hai nhóm: phụ huynh ở Việt Nam lo lắng cho con đang du học / làm việc xa nhà, và du học sinh / người mới sang Mỹ còn lạ lẫm, chưa có kinh nghiệm xử lý thực tiễn. Điểm khác biệt là chị Châu hiểu được cả hai đầu của hành trình đó vì chính chị cũng đang sống qua nó.
+SoulWarmer là website dịch vụ tư vấn tâm lý và đồng hành của người sáng lập — một người Việt đang sống ở Mỹ cùng con. Dịch vụ nhắm đến hai nhóm: phụ huynh ở Việt Nam lo lắng cho con đang du học / làm việc xa nhà, và du học sinh / người mới sang Mỹ còn lạ lẫm, chưa có kinh nghiệm xử lý thực tiễn.
 
 ## Quy tắc bắt buộc (áp dụng cho mọi trang)
 
@@ -16,76 +16,99 @@ Không dùng tên "chị Châu" ở bất kỳ đâu trên website. Tên pháp n
 
 ## Quyết định quan trọng đã chốt
 
-**Không dùng ảnh cá nhân.** Thay bằng một bài bio viết sâu, kể câu chuyện thật của chị Châu. Lý do: tạo sự tin tưởng qua ngôn ngữ thay vì diện mạo, phù hợp với tone của dịch vụ.
+**Không dùng ảnh cá nhân.** Thay bằng một bài bio viết sâu, kể câu chuyện thật của người sáng lập. Lý do: tạo sự tin tưởng qua ngôn ngữ thay vì diện mạo.
 
-**Dịch vụ là tư vấn để yên tâm, không phải dịch vụ "nghe tiếng Việt".** Đừng viết lại điều này theo hướng tiếng Việt là điểm bán hàng chính. Ngôn ngữ là môi trường, không phải sản phẩm.
+**Dịch vụ là tư vấn để yên tâm, không phải dịch vụ "nghe tiếng Việt".** Ngôn ngữ là môi trường, không phải sản phẩm.
 
-**Màu sắc: hồng nhạt, trắng ấm, sạch.** `--color-rose: #D4849A`, `--color-bg: #FFF6F8`, `--color-rose-pale: #FCE8EE`. Font: Montserrat 600/700 cho tiêu đề, Be Vietnam Pro 400/500/600 cho body.
+**Màu sắc: hồng nhạt, trắng ấm, sạch.** `--color-rose: #D4849A`, `--color-bg: #FFF6F8`, `--color-rose-pale: #FCE8EE`. Font: Montserrat 600/700 cho tiêu đề, Be Vietnam Pro 400/500/600 cho body. Base font-size: 18px desktop, 15px mobile. Heading weight: 600.
 
-**Giá theo khung Mỹ (USD).** Tối thiểu $20/10 phút theo quy định. Tư vấn chuyên sâu có thể lên đến $600/giờ. Cần hiển thị giá minh bạch để tránh shock.
+**Giá tính bằng VND.** Gói 10 phút: 530.000đ. Gói 45 phút: 1.300.000đ. Thanh toán trước qua PayOS, không thu tiền mặt.
 
-**Blog dùng Markdown + Decap CMS + Netlify.** Bài viết lưu trong `posts/*.md`, build script tạo `data/posts.json` khi deploy. Chị Châu vào `/admin` để đăng bài mà không cần đụng code.
+**Blog dùng Markdown + Decap CMS.** Bài viết lưu trong `posts/*.md`, build script tạo `data/posts.json`. Khi CMS hoạt động, đăng bài qua `/admin` mà không cần đụng code.
 
-**Form đặt lịch đơn giản:** họ tên, email/sđt, radio chọn phụ huynh hoặc du học sinh, ô nội dung cần tư vấn. Không phức tạp hơn.
+**Form đặt lịch:** họ tên, email, radio chọn phụ huynh / du học sinh / gift card, ô nội dung cần tư vấn. Sau khi submit thì redirect sang PayOS thanh toán.
 
 **Không dùng dấu gạch nối (—) hay dash bullet points** vì trông như AI viết. Viết văn xuôi tự nhiên.
 
-**Chưa có Calendly.** Trang services.html tạm dùng form liên hệ thay vì nút Calendly. Bổ sung sau khi có tài khoản.
+**Chưa có Calendly.** Form đặt lịch hiện dùng flow PayOS. Bổ sung Calendly sau khi có tài khoản.
 
-## Hạ tầng đã deploy
+## Hạ tầng hiện tại
 
 - **GitHub:** github.com/SoulWarmer/soulwarmer
-- **Netlify:** zesty-sherbet-869e72.netlify.app
-- **Admin CMS:** zesty-sherbet-869e72.netlify.app/admin (email: soulwarmerpodcast@gmail.com)
-- Netlify Identity đã bật, Git Gateway đã bật, user admin đã tạo
+- **Hosting:** Vercel — soulwarmer.vercel.app
+- **Serverless API:** Vercel Functions trong `/api/`
+- **Email:** Resend (free tier) — sender `onboarding@resend.dev`, reply-to `soulwarmerpodcast@gmail.com`
+- **Thanh toán:** PayOS (VND) — credentials lưu trong Vercel environment variables
+- **CMS admin:** Decap CMS tại `/admin` — hiện tạm ngưng vì Netlify hết credit (reset ngày 25/5). Khi Netlify mở lại thì admin hoạt động trở lại.
+
+### Vercel environment variables đã cài
+- `PAYOS_CLIENT_ID`
+- `PAYOS_API_KEY`
+- `PAYOS_CHECKSUM_KEY`
+- `RESEND_API_KEY`
 
 ## Cấu trúc hiện tại
 
 ```
 soulwarmer/
-├── index.html              ← Landing page (đã xong, có block 3 bài mới nhất)
-├── post.html               ← Trang đọc bài viết đơn lẻ (đã xong)
-├── css/style.css           ← Design system (đã xong)
-├── js/main.js              ← Menu mobile, scroll animation, form handlers (đã xong)
-├── admin/                  ← Decap CMS (đã xong, hoạt động)
+├── index.html              ← Landing page (xong)
+├── post.html               ← Trang đọc bài đơn lẻ (xong)
+├── css/style.css           ← Design system (xong)
+├── js/main.js              ← Menu mobile, scroll animation (xong)
+├── admin/                  ← Decap CMS (xong, tạm ngưng chờ Netlify)
 │   ├── index.html
 │   └── config.yml
-├── netlify.toml            ← Build command: node scripts/build-posts.js (đã xong)
-├── scripts/build-posts.js  ← Tạo data/posts.json từ posts/*.md (đã xong)
-├── data/posts.json         ← Manifest bài viết (2 bài, đang hoạt động)
-├── posts/                  ← File markdown (2 bài, đăng qua Decap CMS)
+├── api/
+│   ├── create-payment.js   ← Tạo PayOS checkout link
+│   └── send-emails.js      ← Gửi email xác nhận qua Resend
+├── netlify.toml            ← Build command (giữ lại cho khi Netlify mở lại)
+├── scripts/build-posts.js  ← Tạo data/posts.json từ posts/*.md
+├── data/posts.json         ← Manifest bài viết (commit thủ công khi thêm bài)
+├── posts/                  ← File markdown (4 bài)
 └── pages/
-    ├── content-hub.html    ← Trang danh sách bài, filter theo chủ đề (đã xong)
-    ├── services.html       ← Trang dịch vụ và đặt lịch (đã xong, xem ghi chú)
-    ├── about.html          ← CHƯA LÀM
-    └── contact.html        ← CHƯA LÀM
+    ├── content-hub.html    ← Danh sách bài, filter theo chủ đề (xong)
+    ├── services.html       ← Dịch vụ, form đặt lịch, PayOS, email (xong)
+    ├── about.html          ← Bio founder, không ảnh (xong)
+    └── contact.html        ← 4 kênh: Facebook, YouTube, TikTok, Email (xong)
 ```
 
 ## Trạng thái từng trang
 
-**index.html** — Xong. Có block "Bài viết mới nhất" fetch từ data/posts.json, hiển thị 3 bài gần nhất với fade-up animation. Netlify Identity Widget đã nhúng để hỗ trợ CMS login redirect.
+**index.html** — Xong. Block "Bài viết mới nhất" fetch từ data/posts.json, hiển thị 3 bài gần nhất.
 
-**pages/services.html** — Xong về giao diện. Gồm:
-- Hai gói: Phiên nhanh 10 phút / $20 và Tư vấn chuyên sâu 45 phút / $49 (featured, badge "Phổ biến")
-- Gift card section với 2 nút chọn gói
-- Intake form: họ tên, email/sđt, chọn gói (visual radio), bạn là ai (phụ huynh / du học sinh / gift card), nội dung cần hỏi
-- **CHÚ Ý:** Form hiện vẫn ghi "Không cần thanh toán trước" nhưng thực tế phải thanh toán trước qua PayOS. Chưa tích hợp PayOS vì cần Netlify Functions backend.
+**pages/services.html** — Xong hoàn toàn. Gồm:
+- Hai gói: 530.000đ (10 phút) và 1.300.000đ (45 phút, badge "Phổ biến")
+- Gift card section
+- Form: họ tên, email, chọn gói, bạn là ai, nội dung cần hỏi
+- Bấm "Thanh toán ngay" → validate form → gọi `/api/create-payment` → redirect PayOS
+- Sau khi thanh toán, PayOS redirect về `?payment=success` → hiện banner xanh + gửi 2 email tự động
 
-**admin/** — Decap CMS hoạt động tốt. Chị Châu vào zesty-sherbet-869e72.netlify.app/admin để đăng bài, bài sẽ tự deploy lên Netlify và hiện trên website.
+**pages/about.html** — Xong. Bio founder theo timeline 2016-2024, không ảnh cá nhân.
 
-**js/main.js** — Đã fix hai bug quan trọng: (1) `window.observeFadeUp` được expose để các inline script trong HTML khác gọi được sau khi render động; (2) Tất cả element có class `fade-up` sẵn trong HTML cũng được observe ngay khi load.
+**pages/contact.html** — Xong. 4 channel card: Facebook, YouTube, TikTok, Email. Hover hiện viền hồng.
+
+**pages/content-hub.html** — Xong. Filter theo chủ đề.
+
+**admin/** — Decap CMS. Hiện tạm ngưng vì Netlify hết credit. Chờ reset ngày 25/5 để đăng bài lại.
+
+**CHÚ Ý về blog:** Khi CMS hoạt động trở lại, sau khi đăng bài cần chạy `node scripts/build-posts.js` và commit `data/posts.json` để Vercel phục vụ đúng. Vercel không tự chạy build script (không có package.json / vercel.json).
+
+## Luồng thanh toán + email
+
+1. Khách điền form → thông tin lưu sessionStorage → gọi POST `/api/create-payment`
+2. API tạo HMAC signature, gọi PayOS, trả về `checkoutUrl`
+3. Browser redirect sang trang thanh toán PayOS
+4. Khách thanh toán → PayOS redirect về `services.html?payment=success`
+5. Trang đọc sessionStorage → gọi POST `/api/send-emails`
+6. Resend gửi 2 email: xác nhận cho khách + alert cho owner (`soulwarmerpodcast@gmail.com`)
 
 ## Bước tiếp theo (theo thứ tự ưu tiên)
 
-1. **`pages/about.html`** — bio viết sâu, không có ảnh. Kể câu chuyện thật: chị là ai, tại sao làm điều này, trải nghiệm sống ở Mỹ với con. Cần user cung cấp thông tin thật trước khi viết.
-
-2. **`pages/contact.html`** — form liên hệ + lead magnet (Checklist 72h đầu miễn phí, nhận qua email).
-
-3. **PayOS integration** — Cập nhật services.html để thanh toán trước. Cần Netlify Functions gọi PayOS API sinh checkout link. Khi bấm "Đặt lịch" sẽ tạo link thanh toán rồi redirect. Sau khi thanh toán thành công mới xác nhận lịch.
-
-4. **Custom domain** — đổi từ zesty-sherbet-869e72.netlify.app sang domain riêng.
-
-5. **Calendly** — khi có tài khoản, thay form đặt lịch trong services.html bằng Calendly embed.
+1. **Test luồng PayOS thật** — đặt 1 đơn thật để xác nhận email gửi đúng 2 chiều trước khi ra mắt.
+2. **CMS admin** — chờ Netlify reset ngày 25/5. Sau đó nhớ: đăng bài xong → chạy build script → commit posts.json.
+3. **Custom domain** — khi có domain, cập nhật `cancelUrl` / `returnUrl` trong `api/create-payment.js` và sender email trong Resend.
+4. **Calendly** — khi có tài khoản, thay form đặt lịch trong services.html bằng Calendly embed.
+5. **vercel.json** — thêm build command để Vercel tự chạy `build-posts.js` khi deploy, không cần commit posts.json thủ công.
 
 ## Lưu ý khi viết content
 
