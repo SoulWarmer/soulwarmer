@@ -283,17 +283,6 @@
     </div>
   </section>
 
-  <!-- Modal QR thanh toán -->
-  <div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:999; align-items:center; justify-content:center;">
-    <div style="background:white; border-radius:20px; padding:40px 32px; max-width:360px; width:90%; text-align:center; position:relative;">
-      <button onclick="closePaymentModal()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.6rem; cursor:pointer; color:#aaa; line-height:1;">×</button>
-      <p id="modalPkg" style="color:var(--color-rose); font-weight:600; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;"></p>
-      <p id="modalAmount" style="font-size:1.8rem; font-weight:700; color:var(--color-text); margin-bottom:24px;"></p>
-      <img id="modalQR" src="" alt="QR thanh toán" style="width:200px; height:200px; margin:0 auto 20px; display:block; border-radius:8px;" />
-      <p style="font-size:0.85rem; color:#888; margin-bottom:20px;">Quét QR bằng app ngân hàng để thanh toán</p>
-      <a id="modalLink" href="#" target="_blank" class="btn btn-primary" style="display:block;">Mở trang thanh toán</a>
-    </div>
-  </div>
 
   <footer class="footer">
     <div class="footer-inner">
@@ -338,7 +327,7 @@
       if (!pkgInput) { alert('Vui lòng chọn gói tư vấn'); return; }
       const packageId = pkgInput.value === '10p-20usd' ? '10p' : '45p';
       const btn = document.getElementById('submitBtn');
-      btn.textContent = 'Đang tạo thanh toán...';
+      btn.textContent = 'Đang xử lý...';
       btn.disabled = true;
       try {
         const res = await fetch('/api/create-payment', {
@@ -348,26 +337,18 @@
         });
         const data = await res.json();
         if (res.ok) {
-          document.getElementById('modalPkg').textContent = data.display;
-          document.getElementById('modalAmount').textContent = data.amount.toLocaleString('vi-VN') + 'đ';
-          document.getElementById('modalQR').src = 'https://api.qrserver.com/v1/create-qr-code/?data=' + encodeURIComponent(data.qrCode) + '&size=200x200';
-          document.getElementById('modalLink').href = data.checkoutUrl;
-          const modal = document.getElementById('paymentModal');
-          modal.style.display = 'flex';
+          window.location.href = data.checkoutUrl;
         } else {
           alert('Lỗi: ' + (data.error || 'Vui lòng thử lại'));
+          btn.textContent = 'Thanh toán ngay';
+          btn.disabled = false;
         }
       } catch (err) {
         alert('Có lỗi xảy ra. Vui lòng thử lại.');
-      } finally {
         btn.textContent = 'Thanh toán ngay';
         btn.disabled = false;
       }
     });
-
-    function closePaymentModal() {
-      document.getElementById('paymentModal').style.display = 'none';
-    }
   </script>
 </body>
 </html>
