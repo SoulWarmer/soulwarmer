@@ -278,6 +278,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Thanh toán ngay</button>
+        <p id="formError" style="display:none; color:#e05; font-size:0.85rem; text-align:center; margin-top:10px;"></p>
         <p class="form-note">Thanh toán an toàn qua PayOS. QR hiện ngay sau khi bấm.</p>
       </form>
     </div>
@@ -321,10 +322,35 @@
       document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth' });
     }
 
+    function showError(msg) {
+      const el = document.getElementById('formError');
+      el.textContent = msg;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function clearError() {
+      document.getElementById('formError').style.display = 'none';
+    }
+
     document.getElementById('servicesForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      clearError();
+
       const pkgInput = document.querySelector('input[name="package"]:checked');
-      if (!pkgInput) { alert('Vui lòng chọn gói tư vấn'); return; }
+      if (!pkgInput) { showError('Vui lòng chọn gói tư vấn.'); return; }
+
+      const name = this.querySelector('input[placeholder*="Họ và tên"]').value.trim();
+      if (!name) { showError('Vui lòng nhập họ và tên.'); return; }
+
+      const contact = this.querySelector('input[placeholder*="email"]').value.trim();
+      if (!contact) { showError('Vui lòng nhập email hoặc số điện thoại.'); return; }
+
+      const who = document.querySelector('input[name="who"]:checked');
+      if (!who) { showError('Vui lòng cho biết bạn là ai.'); return; }
+
+      const message = this.querySelector('textarea').value.trim();
+      if (!message) { showError('Vui lòng mô tả ngắn điều bạn muốn trao đổi.'); return; }
+
       const packageId = pkgInput.value === '10p-20usd' ? '10p' : '45p';
       const btn = document.getElementById('submitBtn');
       btn.textContent = 'Đang xử lý...';
