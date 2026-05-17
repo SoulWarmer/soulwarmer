@@ -219,6 +219,14 @@
     </div>
   </section>
 
+  <section id="paymentSuccess" style="display:none; background:#f0faf4; padding:48px 24px; text-align:center;">
+    <div style="max-width:520px; margin:0 auto;">
+      <div style="font-size:2.5rem; margin-bottom:16px;">✓</div>
+      <h2 style="color:#2a7a4f; margin-bottom:12px;">Thanh toán thành công!</h2>
+      <p style="color:#444; line-height:1.7;">Xin chào <strong id="successName">bạn</strong>, SoulWarmer đã nhận được thanh toán của bạn. Mình sẽ liên hệ trong vòng 24 giờ để xác nhận lịch. Hãy kiểm tra email nhé.</p>
+    </div>
+  </section>
+
   <section class="booking-section" id="booking-form">
     <div class="container">
       <p class="section-label" style="text-align:center">Đặt lịch</p>
@@ -352,6 +360,16 @@
       if (!message) { showError('Vui lòng mô tả ngắn điều bạn muốn trao đổi.'); return; }
 
       const packageId = pkgInput.value === '10p-20usd' ? '10p' : '45p';
+      const packageDisplay = packageId === '10p' ? 'Hỏi nhanh 10 phút' : 'Tư vấn đầy đủ 45 phút';
+      const packageAmount = packageId === '10p' ? '530.000' : '1.300.000';
+
+      sessionStorage.setItem('sw_order', JSON.stringify({
+        name,
+        email: contact,
+        packageDisplay,
+        amount: packageAmount,
+      }));
+
       const btn = document.getElementById('submitBtn');
       btn.textContent = 'Đang xử lý...';
       btn.disabled = true;
@@ -359,22 +377,42 @@
         const res = await fetch('/api/create-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ packageId })
+          body: JSON.stringify({ packageId, name, email: contact }),
         });
         const data = await res.json();
         if (res.ok) {
           window.location.href = data.checkoutUrl;
         } else {
-          alert('Lỗi: ' + (data.error || 'Vui lòng thử lại'));
+          showError('Lỗi: ' + (data.error || 'Vui lòng thử lại'));
           btn.textContent = 'Thanh toán ngay';
           btn.disabled = false;
         }
       } catch (err) {
-        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+        showError('Có lỗi xảy ra. Vui lòng thử lại.');
         btn.textContent = 'Thanh toán ngay';
         btn.disabled = false;
       }
     });
+
+    if (new URLSearchParams(window.location.search).get('payment') === 'success') {
+      const raw = sessionStorage.getItem('sw_order');
+      const banner = document.getElementById('paymentSuccess');
+      if (banner) {
+        banner.style.display = 'block';
+        banner.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (raw) {
+        const order = JSON.parse(raw);
+        const nameEl = document.getElementById('successName');
+        if (nameEl) nameEl.textContent = order.name;
+        sessionStorage.removeItem('sw_order');
+        fetch('/api/send-emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order),
+        }).catch(() => {});
+      }
+    }
   </script>
 </body>
 </html>
