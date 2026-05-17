@@ -32,10 +32,10 @@
 
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 18px; }
 body {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 1rem;
   line-height: 1.75;
   color: var(--color-text);
   background: var(--color-bg);
@@ -614,6 +614,7 @@ p  { color: var(--color-text-soft); }
 }
 
 @media (max-width: 640px) {
+  html { font-size: 15px; }
 
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
