@@ -85,8 +85,8 @@
   <section class="hub-hero">
     <div class="container">
       <p class="section-label">Tài nguyên</p>
-      <h1>Bài viết & Góc chia sẻ</h1>
-      <p>Những quan sát thực tế về hành trình thích nghi, dành cho người đang đi qua và người đang dõi theo từ xa.</p>
+      <h1>Bài viết & Bản đồ đồng hành</h1>
+      <p>Những quan sát thực tế cho người chuẩn bị đi, vừa tới nơi, đang thích nghi, và gia đình đang dõi theo từ xa.</p>
     </div>
   </section>
 
@@ -94,6 +94,9 @@
     <div class="container">
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-cat="all">Tất cả</button>
+        <button class="filter-btn" data-cat="truoc-khi-di">Trước khi đi</button>
+        <button class="filter-btn" data-cat="canh-bao-di-lam">Cảnh báo đi làm</button>
+        <button class="filter-btn" data-cat="chuan-bi-truoc-bay">Chuẩn bị trước bay</button>
         <button class="filter-btn" data-cat="soc-van-hoa">Sốc văn hóa</button>
         <button class="filter-btn" data-cat="ngon-ngu-ket-noi">Ngôn ngữ kết nối</button>
         <button class="filter-btn" data-cat="ban-do-thich-nghi">Bản đồ thích nghi</button>
@@ -110,7 +113,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <span class="footer-logo">SoulWarmer</span>
-        <p>Dịch vụ tư vấn và đồng hành cho du học sinh, người Việt xa nhà và gia đình của họ.</p>
+        <p>Dịch vụ tư vấn và đồng hành cho gia đình Việt, du học sinh, người mới sang và người Việt xa nhà.</p>
       </div>
       <div class="footer-col">
         <h5>Điều hướng</h5>
@@ -131,7 +134,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 SoulWarmer.</span>
+      <span>© 2026 SoulWarmer.</span>
     </div>
   </footer>
 
@@ -142,7 +145,10 @@
       'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
       'ban-do-thich-nghi': 'Bản đồ thích nghi',
       'quan-tri-noi-lo': 'Quản trị nỗi lo',
-      'tinh-huong-kho': 'Tình huống khó'
+      'tinh-huong-kho': 'Tình huống khó',
+      'truoc-khi-di': 'Trước khi đi',
+      'chuan-bi-truoc-bay': 'Chuẩn bị trước bay',
+      'canh-bao-di-lam': 'Cảnh báo đi làm'
     };
 
     function formatDate(d) {
@@ -156,7 +162,7 @@
         return;
       }
       grid.innerHTML = posts.map(p => `
-        <div class="post-card" data-cat="${p.category || ''}">
+        <div class="post-card fade-up" data-cat="${p.category || ''}">
           <div class="post-card-body">
             <div class="post-card-tag">${categoryLabels[p.category] || p.category || ''}</div>
             <div class="post-card-title">${p.title}</div>
@@ -167,6 +173,7 @@
             <a href="../post.html?slug=${p.slug}" class="post-card-link">Đọc tiếp →</a>
           </div>
         </div>`).join('');
+      if (window.observeFadeUp) window.observeFadeUp();
     }
 
     let allPosts = [];

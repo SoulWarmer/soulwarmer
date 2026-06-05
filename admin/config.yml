@@ -20,6 +20,9 @@ collections:
         name: "category"
         widget: "select"
         options:
+          - { label: "Trước khi đi", value: "truoc-khi-di" }
+          - { label: "Chuẩn bị trước bay", value: "chuan-bi-truoc-bay" }
+          - { label: "Cảnh báo đi làm", value: "canh-bao-di-lam" }
           - { label: "Sốc văn hóa", value: "soc-van-hoa" }
           - { label: "Ngôn ngữ kết nối", value: "ngon-ngu-ket-noi" }
           - { label: "Bản đồ thích nghi", value: "ban-do-thich-nghi" }

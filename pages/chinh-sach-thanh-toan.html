@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chính sách thanh toán — SoulWarmer</title>
+  <meta name="description" content="Chính sách thanh toán của SoulWarmer — giá dịch vụ, phương thức thanh toán, hủy lịch và hoàn tiền." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .policy-hero {
+      padding: 72px 24px 48px;
+      background: linear-gradient(160deg, #FFF6F8 0%, #FCEEF3 100%);
+      text-align: center;
+    }
+    .policy-hero h1 { max-width: 640px; margin: 0 auto 16px; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    .policy-hero p { max-width: 500px; margin: 0 auto; font-size: 0.97rem; color: var(--color-text-soft); }
+
+    .policy-body { padding: 64px 24px 96px; }
+    .policy-inner { max-width: 760px; margin: 0 auto; }
+    .policy-inner h2 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 48px 0 16px;
+    }
+    .policy-inner h2:first-child { margin-top: 0; }
+    .policy-inner p {
+      font-size: 0.97rem;
+      line-height: 1.85;
+      color: var(--color-text-soft);
+      margin-bottom: 16px;
+    }
+    .policy-inner ul {
+      list-style: disc;
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+    .policy-inner ul li {
+      font-size: 0.97rem;
+      line-height: 1.85;
+      color: var(--color-text-soft);
+      margin-bottom: 8px;
+    }
+    .policy-inner strong { color: var(--color-text); font-weight: 600; }
+    .policy-date {
+      display: inline-block;
+      font-size: 0.82rem;
+      color: var(--color-rose);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .policy-divider {
+      width: 48px;
+      height: 3px;
+      background: var(--color-rose-pale);
+      border-radius: 4px;
+      margin: 32px 0;
+    }
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 0.95rem;
+    }
+    .pricing-table th {
+      background: var(--color-rose-pale);
+      color: var(--color-text);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+    }
+    .pricing-table td {
+      padding: 14px 20px;
+      color: var(--color-text-soft);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table .price {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--color-rose);
+      font-size: 1.05rem;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .policy-body { padding: 48px 24px 72px; }
+      .pricing-table th, .pricing-table td { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">SoulWarmer</a>
+      <nav class="nav-links">
+        <a href="about.html">Về chúng tôi</a>
+        <a href="services.html">Dịch vụ</a>
+        <a href="content-hub.html">Tài nguyên</a>
+        <a href="contact.html">Liên hệ</a>
+        <a href="services.html" class="btn btn-primary">Đặt lịch tư vấn</a>
+      </nav>
+      <button class="nav-hamburger" id="hamburger" aria-label="Mở menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="mobileMenu">
+      <a href="../index.html">Trang chủ</a>
+      <a href="about.html">Về chúng tôi</a>
+      <a href="services.html">Dịch vụ</a>
+      <a href="content-hub.html">Tài nguyên</a>
+      <a href="contact.html">Liên hệ</a>
+      <a href="services.html" class="btn btn-primary" style="text-align:center">Đặt lịch tư vấn</a>
+    </nav>
+  </header>
+
+  <section class="policy-hero">
+    <p class="section-label">Pháp lý</p>
+    <h1>Chính sách thanh toán</h1>
+    <p>Thông tin về giá dịch vụ, phương thức thanh toán, và điều kiện hủy lịch hoàn tiền của SoulWarmer.</p>
+  </section>
+
+  <section class="policy-body">
+    <div class="policy-inner">
+      <span class="policy-date">Cập nhật lần cuối: tháng 6 năm 2026</span>
+
+      <h2>1. Bảng giá dịch vụ</h2>
+      <p>SoulWarmer hiện cung cấp hai hình thức tư vấn với mức giá cố định tính bằng VND:</p>
+
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Gói dịch vụ</th>
+            <th>Thời lượng</th>
+            <th>Giá</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Hỏi nhanh</strong><br/>Câu hỏi cụ thể, tình huống cần xử lý ngay</td>
+            <td>10 phút</td>
+            <td class="price">530.000đ</td>
+          </tr>
+          <tr>
+            <td><strong>Tư vấn đầy đủ</strong><br/>Nói chuyện sâu, sắp xếp lại và có hướng đi rõ hơn</td>
+            <td>45 phút</td>
+            <td class="price">1.300.000đ</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Giá trên đã bao gồm toàn bộ dịch vụ trong buổi tư vấn. Không có phí phát sinh thêm sau khi thanh toán.</p>
+
+      <h2>2. Phương thức thanh toán</h2>
+      <p>SoulWarmer chấp nhận thanh toán trực tuyến qua cổng <strong>PayOS</strong>, hỗ trợ các hình thức sau:</p>
+      <ul>
+        <li>Chuyển khoản ngân hàng nội địa (tất cả ngân hàng Việt Nam).</li>
+        <li>Ví điện tử (MoMo, ZaloPay, VNPay và các ví liên kết).</li>
+        <li>Thẻ tín dụng / thẻ ghi nợ nội địa và quốc tế.</li>
+      </ul>
+      <p>SoulWarmer <strong>không</strong> thu tiền mặt và không nhận chuyển khoản trực tiếp ngoài cổng PayOS. Mọi giao dịch đều được xử lý và bảo mật bởi PayOS.</p>
+
+      <div class="policy-divider"></div>
+
+      <h2>3. Quy trình thanh toán</h2>
+      <p>Sau khi điền form đặt lịch và nhấn xác nhận, bạn sẽ được chuyển sang trang thanh toán của PayOS. Toàn bộ quá trình diễn ra như sau:</p>
+      <ul>
+        <li>Chọn gói dịch vụ và điền thông tin trong form đặt lịch.</li>
+        <li>Bấm "Thanh toán ngay" để được chuyển sang trang PayOS.</li>
+        <li>Hoàn tất thanh toán trên trang PayOS.</li>
+        <li>PayOS xác nhận và chuyển bạn về trang xác nhận của SoulWarmer.</li>
+        <li>Bạn nhận email xác nhận đặt lịch. SoulWarmer liên hệ trong vòng 24 giờ để chốt giờ tư vấn.</li>
+      </ul>
+
+      <h2>4. Hủy lịch và hoàn tiền</h2>
+      <p>Chúng tôi hiểu rằng đôi khi kế hoạch thay đổi. Chính sách hoàn tiền của SoulWarmer như sau:</p>
+      <ul>
+        <li><strong>Hoàn tiền 100%:</strong> Nếu bạn hủy lịch trước buổi tư vấn ít nhất 24 giờ.</li>
+        <li><strong>Hoàn tiền 100%:</strong> Nếu SoulWarmer không thể liên hệ để xác nhận lịch trong vòng 48 giờ sau thanh toán.</li>
+        <li><strong>Không hoàn tiền:</strong> Nếu hủy trong vòng 24 giờ trước buổi tư vấn hoặc không tham dự mà không báo trước.</li>
+      </ul>
+      <p>Thời gian xử lý hoàn tiền từ 3 đến 7 ngày làm việc tùy theo ngân hàng hoặc phương thức thanh toán của bạn.</p>
+
+      <h2>5. Sự cố thanh toán</h2>
+      <p>Nếu gặp bất kỳ vấn đề nào trong quá trình thanh toán, bao gồm bị tính tiền mà không nhận được xác nhận hoặc muốn kiểm tra trạng thái giao dịch, vui lòng liên hệ ngay qua email <strong>soulwarmerpodcast@gmail.com</strong> với thông tin giao dịch (thời gian, số tiền, tên người giao dịch) để được hỗ trợ trong vòng 24 giờ.</p>
+
+      <h2>6. Thay đổi giá</h2>
+      <p>SoulWarmer có thể điều chỉnh giá dịch vụ khi cần thiết. Thay đổi sẽ được thông báo trên website ít nhất 7 ngày trước khi có hiệu lực. Các đơn hàng đã được thanh toán trước khi thay đổi giá sẽ không bị ảnh hưởng.</p>
+
+      <h2>7. Liên hệ hỗ trợ</h2>
+      <p>Mọi thắc mắc liên quan đến thanh toán, vui lòng gửi email đến <strong>soulwarmerpodcast@gmail.com</strong> với tiêu đề "Hỗ trợ thanh toán". Chúng tôi cam kết phản hồi trong vòng 24 giờ trong ngày làm việc.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">SoulWarmer</span>
+        <p>Dịch vụ tư vấn và đồng hành cho gia đình Việt, du học sinh, người mới sang và người Việt xa nhà.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Điều hướng</h5>
+        <ul>
+          <li><a href="about.html">Về chúng tôi</a></li>
+          <li><a href="services.html">Dịch vụ & Đặt lịch</a></li>
+          <li><a href="content-hub.html">Tài nguyên</a></li>
+          <li><a href="contact.html">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Pháp lý</h5>
+        <ul>
+          <li><a href="chinh-sach-bao-mat.html">Chính sách bảo mật</a></li>
+          <li><a href="dieu-khoan-su-dung.html">Điều khoản dịch vụ</a></li>
+          <li><a href="chinh-sach-thanh-toan.html">Chính sách thanh toán</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SoulWarmer. Dịch vụ tư vấn và đồng hành.</span>
+      <span>Made with care, for people far from home.</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

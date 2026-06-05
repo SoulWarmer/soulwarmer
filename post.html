@@ -24,6 +24,9 @@
     .post-body li { color: var(--color-text-soft); line-height: 1.75; margin-bottom: 6px; }
     .post-body blockquote { border-left: 3px solid var(--color-rose-light); padding: 12px 20px; margin: 24px 0; background: var(--color-rose-pale); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
     .post-body blockquote p { color: var(--color-text); font-style: italic; margin: 0; }
+    .post-body table { width: 100%; border-collapse: collapse; margin: 28px 0; font-size: 0.9rem; }
+    .post-body th, .post-body td { border: 1px solid var(--color-border); padding: 12px 14px; text-align: left; vertical-align: top; line-height: 1.6; }
+    .post-body th { background: var(--color-rose-pale); color: var(--color-text); font-weight: 600; }
     .post-back { display: inline-flex; align-items: center; gap: 6px; font-size: 0.875rem; color: var(--color-rose); margin-bottom: 32px; }
     .post-back:hover { text-decoration: underline; }
     .post-loading { text-align: center; padding: 80px 24px; color: var(--color-text-soft); }
@@ -61,7 +64,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <span class="footer-logo">SoulWarmer</span>
-        <p>Dịch vụ tư vấn và đồng hành cho du học sinh, người Việt xa nhà và gia đình của họ.</p>
+        <p>Dịch vụ tư vấn và đồng hành cho gia đình Việt, du học sinh, người mới sang và người Việt xa nhà.</p>
       </div>
       <div class="footer-col">
         <h5>Điều hướng</h5>
@@ -82,7 +85,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 SoulWarmer.</span>
+      <span>© 2026 SoulWarmer.</span>
     </div>
   </footer>
 
@@ -94,7 +97,10 @@
       'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
       'ban-do-thich-nghi': 'Bản đồ thích nghi',
       'quan-tri-noi-lo': 'Quản trị nỗi lo',
-      'tinh-huong-kho': 'Tình huống khó'
+      'tinh-huong-kho': 'Tình huống khó',
+      'truoc-khi-di': 'Trước khi đi',
+      'chuan-bi-truoc-bay': 'Chuẩn bị trước bay',
+      'canh-bao-di-lam': 'Cảnh báo đi làm'
     };
 
     function formatDate(dateStr) {
@@ -106,12 +112,45 @@
       const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
       if (!match) return { body: text, meta: {} };
       const meta = {};
+      let currentKey = null;
+      let blockKey = null;
+
       match[1].split('\n').forEach(line => {
+        if (blockKey) {
+          if (line.trim() === '') {
+            meta[blockKey] = `${meta[blockKey]} `;
+            return;
+          }
+          if (/^\s+/.test(line)) {
+            meta[blockKey] = `${meta[blockKey]} ${line.trim()}`.trim();
+            return;
+          }
+          blockKey = null;
+        }
+
+        if (/^\s+/.test(line) && currentKey) {
+          meta[currentKey] = `${meta[currentKey]} ${line.trim()}`;
+          return;
+        }
+
         const colon = line.indexOf(':');
-        if (colon === -1) return;
+        if (colon === -1) {
+          currentKey = null;
+          return;
+        }
+
         const key = line.slice(0, colon).trim();
         const val = line.slice(colon + 1).trim().replace(/^["']|["']$/g, '');
-        meta[key] = val;
+        if (/^[>|]-?$/.test(val)) {
+          meta[key] = '';
+          blockKey = key;
+        } else {
+          meta[key] = val;
+        }
+        currentKey = key;
+      });
+      Object.keys(meta).forEach(key => {
+        meta[key] = String(meta[key]).trim().replace(/^["']|["']$/g, '').replace(/\s+/g, ' ');
       });
       return { meta, body: match[2].trim() };
     }
@@ -126,6 +165,11 @@
         if (!res.ok) throw new Error('Không tìm thấy bài viết');
         const text = await res.text();
         const { meta, body } = parseFrontmatter(text);
+        let articleBody = body;
+        const firstLine = articleBody.split('\n')[0]?.trim();
+        if (firstLine && firstLine.replace(/^#\s+/, '') === meta.title) {
+          articleBody = articleBody.split('\n').slice(1).join('\n').trim();
+        }
 
         document.title = `${meta.title || 'Bài viết'} — SoulWarmer`;
         document.getElementById('postContent').innerHTML = `
@@ -141,7 +185,7 @@
             </div>
           </section>
           <article class="post-body">
-            ${marked.parse(body)}
+            ${marked.parse(articleBody)}
           </article>`;
       } catch (e) {
         document.getElementById('postContent').innerHTML = `
