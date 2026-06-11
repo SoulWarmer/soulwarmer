@@ -53,6 +53,7 @@
       <a href="pages/services.html">Dịch vụ</a>
       <a href="pages/content-hub.html">Tài nguyên</a>
       <a href="pages/contact.html">Liên hệ</a>
+      <a href="pages/services.html" class="btn btn-primary" style="text-align:center">Đặt lịch ngay</a>
     </nav>
   </header>
 
@@ -78,31 +79,30 @@
       <div class="footer-col">
         <h5>Kết nối</h5>
         <ul>
-          <li><a href="#">Zalo</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Email</a></li>
+          <li><a href="https://www.facebook.com/soulwarmerpodcast" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@soulwarmerpod" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.tiktok.com/@soul_warmer_podcast" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="mailto:soulwarmerpodcast@gmail.com">Email</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Pháp lý</h5>
+        <ul>
+          <li><a href="pages/chinh-sach-bao-mat.html">Chính sách bảo mật</a></li>
+          <li><a href="pages/dieu-khoan-su-dung.html">Điều khoản dịch vụ</a></li>
+          <li><a href="pages/chinh-sach-thanh-toan.html">Chính sách thanh toán</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 SoulWarmer.</span>
+      <span>© 2026 SoulWarmer. Dịch vụ tư vấn và đồng hành.</span>
+      <span>Made with care, for people far from home.</span>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="js/main.js"></script>
   <script>
-    const categoryLabels = {
-      'soc-van-hoa': 'Sốc văn hóa',
-      'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
-      'ban-do-thich-nghi': 'Bản đồ thích nghi',
-      'quan-tri-noi-lo': 'Quản trị nỗi lo',
-      'tinh-huong-kho': 'Tình huống khó',
-      'truoc-khi-di': 'Trước khi đi',
-      'chuan-bi-truoc-bay': 'Chuẩn bị trước bay',
-      'canh-bao-di-lam': 'Cảnh báo đi làm'
-    };
-
     function formatDate(dateStr) {
       const d = new Date(dateStr);
       return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });

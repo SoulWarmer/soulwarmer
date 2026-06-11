@@ -110,7 +110,6 @@ p  { color: var(--color-text-soft); }
   margin: 16px auto;
   border-radius: 2px;
 }
-.divider-left { margin-left: 0; }
 
 /* ============================================
    NAVIGATION

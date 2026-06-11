@@ -1,3 +1,14 @@
+const categoryLabels = {
+  'soc-van-hoa': 'Sốc văn hóa',
+  'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
+  'ban-do-thich-nghi': 'Bản đồ thích nghi',
+  'quan-tri-noi-lo': 'Quản trị nỗi lo',
+  'tinh-huong-kho': 'Tình huống khó',
+  'truoc-khi-di': 'Trước khi đi',
+  'chuan-bi-truoc-bay': 'Chuẩn bị trước bay',
+  'canh-bao-di-lam': 'Cảnh báo đi làm',
+};
+
 // Mobile navigation
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
