@@ -10,7 +10,8 @@ module.exports = async function handler(req, res) {
   const { packageId } = req.body;
 
   const packages = {
-    '10p': { name: 'SW 10phut', amount: 530000, display: 'Hỏi nhanh 10 phút' },
+    '10p': { name: 'SW 10phut', amount: 530000,  display: 'Hỏi nhanh 10 phút' },
+    '30p': { name: 'SW 30phut', amount: 1035000, display: 'Trao đổi 30 phút' },
     '45p': { name: 'SW 45phut', amount: 1300000, display: 'Tư vấn đầy đủ 45 phút' },
   };
 

@@ -21,9 +21,9 @@
     .packages { padding: var(--section-pad); }
     .packages-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 28px;
-      max-width: 820px;
+      max-width: 1080px;
       margin: 0 auto;
     }
     .package-card {
@@ -132,6 +132,9 @@
     .scope-note h3 { font-size: 1rem; margin-bottom: 10px; }
     .scope-note p { color: var(--color-text-soft); font-size: 0.9rem; line-height: 1.7; margin: 0; }
 
+    @media (max-width: 860px) {
+      .packages-grid { grid-template-columns: 1fr; max-width: 480px; }
+    }
     @media (max-width: 640px) {
       .packages-grid { grid-template-columns: 1fr; }
       .giftcard-inner { flex-direction: column; gap: 20px; padding: 28px; }
@@ -194,6 +197,23 @@
           </div>
         </div>
 
+        <div class="package-card fade-up">
+          <div class="package-duration">30 phút</div>
+          <div class="package-name">Trao đổi chuyên sâu</div>
+          <div class="package-price">
+            <span class="amount">1.035.000đ</span>
+          </div>
+          <p class="package-desc">Khi cần nhiều hơn một câu hỏi nhưng chưa cần cả buổi dài. Đủ thời gian để đặt vấn đề, nghe rõ bối cảnh và đi đến một hướng cụ thể.</p>
+          <ul class="package-list">
+            <li>Tình huống cần phân tích kỹ hơn một chút</li>
+            <li>Chuẩn bị trước quyết định quan trọng sắp tới</li>
+            <li>Nói hết một mối lo mà không bị cắt giữa chừng</li>
+          </ul>
+          <div class="package-cta">
+            <a href="#booking-form" class="btn btn-outline" style="display:block;text-align:center">Đặt lịch gói này</a>
+          </div>
+        </div>
+
         <div class="package-card featured fade-up">
           <div class="package-badge">Phổ biến</div>
           <div class="package-duration">45 phút</div>
@@ -231,8 +251,9 @@
           <h3>Quà tặng thiết thực hơn lời chúc</h3>
           <p>Khi bạn ở Việt Nam lo cho con đang du học, người thân mới sang, hoặc một người bạn đang lạc lõng nơi xa. Đây là cách nói "tôi muốn bạn có người để hỏi." Gửi qua email, dùng được ngay.</p>
           <div class="giftcard-options">
-            <button class="giftcard-btn" onclick="selectGift('10p')">Tặng gói 10 phút — $20</button>
-            <button class="giftcard-btn" onclick="selectGift('45p')">Tặng gói 45 phút — $49</button>
+            <button class="giftcard-btn" onclick="selectGift('10p')">Tặng gói 10 phút — 530.000đ</button>
+            <button class="giftcard-btn" onclick="selectGift('30p')">Tặng gói 30 phút — 1.035.000đ</button>
+            <button class="giftcard-btn" onclick="selectGift('45p')">Tặng gói 45 phút — 1.300.000đ</button>
           </div>
         </div>
       </div>
@@ -262,6 +283,11 @@
             <label for="pkg10" class="pkg-label">
               <span class="pkg-name">Hỏi nhanh 10 phút</span>
               <span class="pkg-price">530.000đ</span>
+            </label>
+            <input type="radio" name="package" id="pkg30" value="30p-35usd" class="pkg-option" />
+            <label for="pkg30" class="pkg-label">
+              <span class="pkg-name">Trao đổi 30 phút</span>
+              <span class="pkg-price">1.035.000đ</span>
             </label>
             <input type="radio" name="package" id="pkg45" value="45p-49usd" class="pkg-option" />
             <label for="pkg45" class="pkg-label">
@@ -359,7 +385,8 @@
   <script src="../js/main.js"></script>
   <script>
     function selectGift(pkg) {
-      document.getElementById(pkg === '10p' ? 'pkg10' : 'pkg45').checked = true;
+      const id = pkg === '10p' ? 'pkg10' : pkg === '30p' ? 'pkg30' : 'pkg45';
+      document.getElementById(id).checked = true;
       document.querySelector('input[name="who"][value="gift"]').checked = true;
       document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth' });
     }
@@ -393,9 +420,12 @@
       const message = this.querySelector('textarea').value.trim();
       if (!message) { showError('Vui lòng mô tả ngắn điều bạn muốn trao đổi.'); return; }
 
-      const packageId = pkgInput.value === '10p-20usd' ? '10p' : '45p';
-      const packageDisplay = packageId === '10p' ? 'Hỏi nhanh 10 phút' : 'Tư vấn đầy đủ 45 phút';
-      const packageAmount = packageId === '10p' ? '530.000' : '1.300.000';
+      const pkgMap = {
+        '10p-20usd': { id: '10p', display: 'Hỏi nhanh 10 phút',     amount: '530.000' },
+        '30p-35usd': { id: '30p', display: 'Trao đổi 30 phút',       amount: '1.035.000' },
+        '45p-49usd': { id: '45p', display: 'Tư vấn đầy đủ 45 phút', amount: '1.300.000' },
+      };
+      const { id: packageId, display: packageDisplay, amount: packageAmount } = pkgMap[pkgInput.value];
 
       sessionStorage.setItem('sw_order', JSON.stringify({
         name,
