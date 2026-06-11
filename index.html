@@ -184,63 +184,22 @@
     </div>
   </section>
 
-  <!-- ========== BOOKING ========== -->
+  <!-- ========== BOOKING CTA ========== -->
   <section class="booking" id="booking">
-    <div class="container">
-      <div class="booking-header section-center">
-        <p class="section-label">Đặt lịch tư vấn</p>
-        <h2>Viết ngắn gọn cũng được, mình đọc kỹ từng tin nhắn trước khi liên hệ lại.</h2>
-      </div>
-      <div class="booking-single">
-        <form class="booking-form" id="bookingForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Họ và tên</label>
-              <input type="text" placeholder="Họ và tên của bạn" required />
-            </div>
-            <div class="form-group">
-              <label>Email hoặc số điện thoại</label>
-              <input type="text" placeholder="email@gmail.com hoặc 0901 234 567" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Bạn là</label>
-            <div class="radio-group">
-              <label class="radio-option">
-                <input type="radio" name="who" value="parent" required />
-                <span>Phụ huynh có con đang du học</span>
-              </label>
-              <label class="radio-option">
-                <input type="radio" name="who" value="student" />
-                <span>Du học sinh / người mới qua</span>
-              </label>
-              <label class="radio-option">
-                <input type="radio" name="who" value="worker" />
-                <span>Người đi làm xa / người thân cần hỏi trước</span>
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Nội dung cần tư vấn</label>
-            <textarea placeholder="Bạn muốn trao đổi về điều gì? Viết ngắn gọn cũng được." rows="4" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%">Gửi yêu cầu</button>
-        </form>
-        <p class="booking-note">Chúng tôi sẽ liên hệ trong vòng 24 giờ để xác nhận lịch.</p>
-      </div>
+    <div class="container section-center">
+      <p class="section-label">Đặt lịch tư vấn</p>
+      <h2>Viết ngắn gọn cũng được, mình đọc kỹ trước khi liên hệ lại.</h2>
+      <p style="color:var(--color-text-muted);max-width:520px;margin:16px auto 0;line-height:1.75">Chọn gói phù hợp, điền vài dòng về tình huống của bạn, và thanh toán trực tiếp. Mình sẽ liên hệ xác nhận trong vòng 24 giờ.</p>
+      <a href="pages/services.html" class="btn btn-primary" style="margin-top:28px;display:inline-block">Xem dịch vụ và đặt lịch</a>
     </div>
   </section>
 
   <!-- ========== LEAD MAGNET ========== -->
   <section class="lead-magnet">
-    <div class="container">
+    <div class="container section-center">
       <h2>Checklist 72 giờ đầu tiên</h2>
-      <p>Những việc cần làm ngay khi mới tới, theo thứ tự, không bỏ sót. Dành cho cả bạn lẫn gia đình ở nhà đang lo. Miễn phí.</p>
-      <form class="lead-form" id="leadForm">
-        <input type="email" placeholder="Email của bạn" required aria-label="Email" />
-        <button type="submit">Nhận ngay</button>
-      </form>
-      <p class="lead-note">Không spam. Bỏ đăng ký bất cứ lúc nào.</p>
+      <p>Những việc cần làm ngay khi mới tới, theo thứ tự ưu tiên. Dành cho du học sinh, người mới định cư và gia đình đang lo.</p>
+      <a href="post.html?slug=2026-04-28-checklist-72-giờ-đầu-tiên-khi-mới-sang-bắc-mỹ" class="btn btn-outline" style="margin-top:20px;display:inline-block">Đọc checklist miễn phí</a>
     </div>
   </section>
 
@@ -313,16 +272,6 @@
       })
       .catch(() => {});
   </script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", function(user) {
-        if (!user) {
-          window.netlifyIdentity.on("login", function() {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
+
 </body>
 </html>
