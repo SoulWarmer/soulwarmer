@@ -1,12 +1,765 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SoulWarmer Admin</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose: #D4849A;
+      --rose-pale: #FCE8EE;
+      --bg: #FFF6F8;
+      --text: #2d2d2d;
+      --muted: #888;
+      --border: #F0D4DB;
+      --white: #fff;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 4px 32px rgba(212,132,154,0.14);
+      text-align: center;
+    }
+
+    .login-card h1 {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--rose);
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    .login-card .sub {
+      color: var(--muted);
+      font-size: 0.875rem;
+      margin-bottom: 32px;
+    }
+
+    .field {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--white);
+      color: var(--text);
+    }
+
+    .field:focus { border-color: var(--rose); }
+
+    .btn-rose {
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.2s;
+    }
+
+    .btn-rose:hover { opacity: 0.88; }
+    .btn-rose:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    #loginError {
+      color: #c62828;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* ── DASHBOARD ── */
+    #dashboard { display: none; }
+
+    .admin-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: var(--rose);
+      font-size: 1.1rem;
+    }
+
+    .admin-nav { display: flex; align-items: center; gap: 4px; }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.18s;
+      font-weight: 500;
+    }
+
+    .tab-btn:hover { background: var(--rose-pale); color: var(--rose); }
+    .tab-btn.active { background: var(--rose-pale); color: var(--rose); font-weight: 600; }
+
+    .btn-logout {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--muted);
+      margin-left: 8px;
+      transition: all 0.18s;
+    }
+
+    .btn-logout:hover { border-color: var(--rose); color: var(--rose); }
+
+    .admin-main { padding: 32px 28px; max-width: 1040px; margin: 0 auto; }
+
+    /* ── TABS ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SECTION HEADER ── */
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .sec-head h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .btn-add {
+      background: var(--rose);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.18s;
+    }
+
+    .btn-add:hover { opacity: 0.88; }
+
+    .btn-ghost {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.18s;
+    }
+
+    .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* ── TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(212,132,154,0.09);
+    }
+
+    .data-table th {
+      background: var(--rose-pale);
+      color: var(--rose);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 11px 16px;
+      text-align: left;
+    }
+
+    .data-table td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--rose-pale);
+      font-size: 0.875rem;
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover td { background: #fffafb; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-parent  { background: #FFF3E0; color: #E67E22; }
+    .badge-student { background: #E8F5E9; color: #27AE60; }
+    .badge-worker  { background: #EDE7F6; color: #7B1FA2; }
+    .badge-gift    { background: #FCE4EC; color: #C2185B; }
+    .badge-default { background: var(--rose-pale); color: var(--rose); }
+
+    .msg-cell {
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+
+    .action-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 11px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.18s;
+      margin-right: 4px;
+    }
+
+    .action-btn:hover { border-color: var(--rose); color: var(--rose); }
+    .action-btn.del:hover { border-color: #c62828; color: #c62828; }
+
+    /* ── EMPTY / LOADING ── */
+    .empty {
+      text-align: center;
+      padding: 52px 24px;
+      color: var(--muted);
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(212,132,154,0.09);
+    }
+
+    .empty .ico { font-size: 2.5rem; margin-bottom: 12px; }
+    .loading { text-align: center; padding: 52px 24px; color: var(--muted); }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .status-bar.ok  { background: #E8F5E9; color: #27AE60; display: block; }
+    .status-bar.err { background: #FFEBEE; color: #C62828; display: block; }
+
+    /* ── EDITOR ── */
+    #postEditor {
+      display: none;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 32px;
+      box-shadow: 0 2px 16px rgba(212,132,154,0.09);
+    }
+
+    .ed-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .ed-head h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .ed-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .ed-grid .span2 { grid-column: 1 / -1; }
+
+    .form-lbl {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.18s;
+    }
+
+    .form-input:focus { border-color: var(--rose); }
+
+    #fBody {
+      width: 100%;
+      min-height: 320px;
+      padding: 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: 'Be Vietnam Pro', monospace;
+      color: var(--text);
+      background: var(--white);
+      outline: none;
+      resize: vertical;
+      line-height: 1.65;
+      transition: border-color 0.18s;
+    }
+
+    #fBody:focus { border-color: var(--rose); }
+
+    .ed-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .admin-header { padding: 0 16px; }
+      .admin-main { padding: 20px 16px; }
+      .ed-grid { grid-template-columns: 1fr; }
+      .ed-grid .span2 { grid-column: 1; }
+      .data-table { font-size: 0.8rem; }
+      .data-table td, .data-table th { padding: 10px 12px; }
+      #postEditor { padding: 20px 16px; }
+    }
+  </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>SoulWarmer</h1>
+    <p class="sub">Trang quản lý nội dung</p>
+    <input class="field" type="password" id="pwInput" placeholder="Mật khẩu" autocomplete="current-password" />
+    <button class="btn-rose" id="loginBtn">Đăng nhập</button>
+    <p id="loginError"></p>
+  </div>
+</div>
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div id="dashboard">
+  <header class="admin-header">
+    <span class="admin-logo">SoulWarmer</span>
+    <nav class="admin-nav">
+      <button class="tab-btn active" id="tabBtnBookings" onclick="showTab('Bookings')">Đặt lịch</button>
+      <button class="tab-btn" id="tabBtnPosts" onclick="showTab('Posts')">Bài viết</button>
+      <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- ── BOOKINGS TAB ── -->
+    <div class="tab-panel active" id="tabBookings">
+      <div class="sec-head">
+        <h2>Khách đặt lịch</h2>
+        <button class="btn-ghost" onclick="loadBookings()">↻ Tải lại</button>
+      </div>
+      <div id="bookingsContent"><div class="loading">Đang tải...</div></div>
+    </div>
+
+    <!-- ── POSTS TAB ── -->
+    <div class="tab-panel" id="tabPosts">
+
+      <!-- Post list -->
+      <div id="postsList">
+        <div class="sec-head">
+          <h2>Bài viết</h2>
+          <button class="btn-add" onclick="showEditor()">+ Bài viết mới</button>
+        </div>
+        <div id="postsContent"><div class="loading">Đang tải...</div></div>
+      </div>
+
+      <!-- Post editor -->
+      <div id="postEditor">
+        <div class="ed-head">
+          <h3 id="edTitle">Bài viết mới</h3>
+          <button class="btn-ghost" onclick="cancelEdit()">✕ Hủy</button>
+        </div>
+        <div id="statusEditor" class="status-bar"></div>
+        <div class="ed-grid">
+          <div class="span2">
+            <label class="form-lbl">Tiêu đề</label>
+            <input class="form-input" type="text" id="fTitle" placeholder="Tiêu đề bài viết" />
+          </div>
+          <div>
+            <label class="form-lbl">Ngày đăng</label>
+            <input class="form-input" type="date" id="fDate" />
+          </div>
+          <div>
+            <label class="form-lbl">Chủ đề</label>
+            <select class="form-input" id="fCategory">
+              <option value="">Chọn chủ đề</option>
+              <option value="truoc-khi-di">Trước khi đi</option>
+              <option value="chuan-bi-truoc-bay">Chuẩn bị trước bay</option>
+              <option value="canh-bao-di-lam">Cảnh báo đi làm</option>
+              <option value="soc-van-hoa">Sốc văn hóa</option>
+              <option value="ngon-ngu-ket-noi">Ngôn ngữ kết nối</option>
+              <option value="ban-do-thich-nghi">Bản đồ thích nghi</option>
+              <option value="quan-tri-noi-lo">Quản trị nỗi lo</option>
+              <option value="tinh-huong-kho">Tình huống khó</option>
+            </select>
+          </div>
+          <div class="span2">
+            <label class="form-lbl">Tóm tắt</label>
+            <input class="form-input" type="text" id="fSummary" placeholder="Mô tả ngắn hiển thị trên trang danh sách" />
+          </div>
+        </div>
+        <div>
+          <label class="form-lbl">Nội dung (Markdown)</label>
+          <textarea id="fBody" placeholder="# Tiêu đề&#10;&#10;Nội dung bài viết..."></textarea>
+        </div>
+        <div class="ed-actions">
+          <button class="btn-ghost" onclick="cancelEdit()">Hủy</button>
+          <button class="btn-rose" id="saveBtn" style="width:auto;padding:10px 24px" onclick="savePost()">Lưu bài viết</button>
+        </div>
+      </div>
+
+    </div><!-- /tabPosts -->
+
+  </main>
+</div><!-- /dashboard -->
+
+<script>
+const WHO = { parent:'Phụ huynh', student:'Du học sinh', worker:'Người đi làm xa', gift:'Gift card' };
+const CAT = {
+  'truoc-khi-di':'Trước khi đi', 'chuan-bi-truoc-bay':'Chuẩn bị trước bay',
+  'canh-bao-di-lam':'Cảnh báo đi làm', 'soc-van-hoa':'Sốc văn hóa',
+  'ngon-ngu-ket-noi':'Ngôn ngữ kết nối', 'ban-do-thich-nghi':'Bản đồ thích nghi',
+  'quan-tri-noi-lo':'Quản trị nỗi lo', 'tinh-huong-kho':'Tình huống khó',
+};
+
+let token = localStorage.getItem('sw_admin_token');
+let editingPost = null; // { slug, sha }
+
+// ── AUTH ──────────────────────────────────────────────────────────────
+async function login() {
+  const pwd = document.getElementById('pwInput').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  if (!pwd) return;
+  btn.disabled = true;
+  btn.textContent = 'Đang đăng nhập...';
+  err.textContent = '';
+  try {
+    const r = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pwd }),
+    });
+    const d = await r.json();
+    if (r.ok) {
+      token = d.token;
+      localStorage.setItem('sw_admin_token', token);
+      showDashboard();
+    } else {
+      err.textContent = d.error || 'Sai mật khẩu';
+    }
+  } catch {
+    err.textContent = 'Lỗi kết nối. Thử lại nhé.';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Đăng nhập';
+}
+
+function logout() {
+  localStorage.removeItem('sw_admin_token');
+  token = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('pwInput').value = '';
+}
+
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadBookings();
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab' + name).classList.add('active');
+  document.getElementById('tabBtn' + name).classList.add('active');
+  if (name === 'Bookings') loadBookings();
+  if (name === 'Posts') loadPosts();
+}
+
+// ── BOOKINGS ──────────────────────────────────────────────────────────
+async function loadBookings() {
+  const el = document.getElementById('bookingsContent');
+  el.innerHTML = '<div class="loading">Đang tải...</div>';
+  try {
+    const r = await fetch('/api/admin/bookings', { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { logout(); return; }
+    const bookings = await r.json();
+    if (!bookings.length) {
+      el.innerHTML = `<div class="empty"><div class="ico">📭</div><p>Chưa có đặt lịch nào.</p></div>`;
+      return;
+    }
+    el.innerHTML = `
+      <table class="data-table">
+        <thead><tr>
+          <th>Ngày</th><th>Tên</th><th>Email</th><th>Gói</th><th>Loại</th><th>Nội dung</th>
+        </tr></thead>
+        <tbody>
+          ${bookings.map(b => `<tr>
+            <td style="white-space:nowrap">${fmtDate(b.createdAt)}</td>
+            <td><strong>${esc(b.name)}</strong></td>
+            <td><a href="mailto:${esc(b.email)}" style="color:var(--rose);text-decoration:none">${esc(b.email)}</a></td>
+            <td>${esc(b.package || '')}</td>
+            <td><span class="badge badge-${b.who || 'default'}">${WHO[b.who] || b.who || ''}</span></td>
+            <td class="msg-cell" title="${esc(b.message || '')}">${esc(b.message || '')}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch {
+    el.innerHTML = `<div class="empty"><div class="ico">⚠️</div><p>Lỗi tải dữ liệu.</p></div>`;
+  }
+}
+
+// ── POSTS ─────────────────────────────────────────────────────────────
+async function loadPosts() {
+  const el = document.getElementById('postsContent');
+  el.innerHTML = '<div class="loading">Đang tải...</div>';
+  document.getElementById('postsList').style.display = 'block';
+  document.getElementById('postEditor').style.display = 'none';
+  try {
+    const r = await fetch('/api/admin/posts', { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { logout(); return; }
+    const posts = await r.json();
+    if (!posts.length) {
+      el.innerHTML = `<div class="empty"><div class="ico">📝</div><p>Chưa có bài viết nào.</p></div>`;
+      return;
+    }
+    el.innerHTML = `
+      <table class="data-table">
+        <thead><tr><th>Tiêu đề</th><th>Ngày</th><th>Chủ đề</th><th></th></tr></thead>
+        <tbody>
+          ${posts.map(p => `<tr>
+            <td><strong>${esc(p.title)}</strong></td>
+            <td style="white-space:nowrap">${p.date || ''}</td>
+            <td>${CAT[p.category] || p.category || ''}</td>
+            <td style="white-space:nowrap">
+              <button class="action-btn" onclick="editPost('${esc(p.slug)}')">Sửa</button>
+              <button class="action-btn del" onclick="deletePost('${esc(p.slug)}')">Xóa</button>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+  } catch {
+    el.innerHTML = `<div class="empty"><div class="ico">⚠️</div><p>Lỗi tải bài viết.</p></div>`;
+  }
+}
+
+function showEditor() {
+  editingPost = null;
+  document.getElementById('edTitle').textContent = 'Bài viết mới';
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fDate').value = todayStr();
+  document.getElementById('fCategory').value = '';
+  document.getElementById('fSummary').value = '';
+  document.getElementById('fBody').value = '';
+  setEdStatus('', '');
+  document.getElementById('postsList').style.display = 'none';
+  document.getElementById('postEditor').style.display = 'block';
+  document.getElementById('fTitle').focus();
+}
+
+async function editPost(slug) {
+  showEditor();
+  document.getElementById('edTitle').textContent = 'Đang tải...';
+  try {
+    const r = await fetch(`/api/admin/posts?slug=${encodeURIComponent(slug)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (r.status === 401) { logout(); return; }
+    const data = await r.json();
+    const fm = parseFm(data.content);
+    const body = data.content.replace(/^---[\s\S]*?---\n\n?/, '');
+    document.getElementById('fTitle').value = fm.title || '';
+    document.getElementById('fDate').value = fm.date || '';
+    document.getElementById('fCategory').value = fm.category || '';
+    document.getElementById('fSummary').value = fm.summary || '';
+    document.getElementById('fBody').value = body;
+    document.getElementById('edTitle').textContent = 'Chỉnh sửa bài viết';
+    editingPost = { slug: data.slug, sha: data.sha };
+  } catch {
+    setEdStatus('Lỗi tải bài viết. Thử lại.', 'err');
+    document.getElementById('edTitle').textContent = 'Lỗi';
+  }
+}
+
+async function savePost() {
+  const title   = document.getElementById('fTitle').value.trim();
+  const date     = document.getElementById('fDate').value;
+  const category = document.getElementById('fCategory').value;
+  const summary  = document.getElementById('fSummary').value.trim();
+  const body     = document.getElementById('fBody').value.trim();
+  if (!title || !date || !body) {
+    setEdStatus('Vui lòng điền Tiêu đề, Ngày đăng và Nội dung.', 'err');
+    return;
+  }
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = 'Đang lưu...';
+  setEdStatus('', '');
+  const isEdit = !!editingPost;
+  const payload = { title, date, category, summary, body };
+  if (isEdit) { payload.slug = editingPost.slug; payload.sha = editingPost.sha; }
+  try {
+    const r = await fetch('/api/admin/posts', {
+      method: isEdit ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    if (r.ok) {
+      setEdStatus(isEdit ? 'Đã lưu thay đổi.' : 'Đã tạo bài viết mới.', 'ok');
+      setTimeout(() => { cancelEdit(); loadPosts(); }, 1200);
+    } else {
+      setEdStatus(d.error || 'Lỗi lưu bài viết. Thử lại.', 'err');
+    }
+  } catch {
+    setEdStatus('Lỗi kết nối. Thử lại.', 'err');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Lưu bài viết';
+}
+
+async function deletePost(slug) {
+  if (!confirm(`Xóa bài "${slug}"? Không thể hoàn tác.`)) return;
+  try {
+    const r1 = await fetch(`/api/admin/posts?slug=${encodeURIComponent(slug)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!r1.ok) { alert('Không thể lấy thông tin bài viết.'); return; }
+    const d = await r1.json();
+    const r2 = await fetch('/api/admin/posts', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ slug, sha: d.sha }),
+    });
+    if (r2.ok) { loadPosts(); }
+    else { const e = await r2.json(); alert(e.error || 'Lỗi xóa bài viết.'); }
+  } catch { alert('Lỗi kết nối. Thử lại.'); }
+}
+
+function cancelEdit() {
+  editingPost = null;
+  document.getElementById('postsList').style.display = 'block';
+  document.getElementById('postEditor').style.display = 'none';
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function parseFm(content) {
+  const m = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!m) return {};
+  const fm = {};
+  m[1].split('\n').forEach(line => {
+    const c = line.indexOf(':');
+    if (c === -1) return;
+    fm[line.slice(0,c).trim()] = line.slice(c+1).trim().replace(/^["']|["']$/g, '');
+  });
+  return fm;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function setEdStatus(msg, type) {
+  const el = document.getElementById('statusEditor');
+  el.textContent = msg;
+  el.className = `status-bar${msg ? ' '+type : ''}`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+document.getElementById('pwInput').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+document.getElementById('loginBtn').addEventListener('click', login);
+
+if (token) showDashboard();
+</script>
 </body>
 </html>

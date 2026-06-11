@@ -1,3 +1,19 @@
+const { ghGet, ghPut } = require('./_lib');
+
+async function saveBooking(booking) {
+  try {
+    const { status, data } = await ghGet('data/bookings.json');
+    const existing = status === 200
+      ? JSON.parse(Buffer.from(data.content, 'base64').toString('utf8'))
+      : [];
+    const sha = status === 200 ? data.sha : undefined;
+    existing.unshift(booking);
+    await ghPut('data/bookings.json', JSON.stringify(existing, null, 2), sha, 'Add booking');
+  } catch (e) {
+    console.error('saveBooking failed:', e);
+  }
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -5,7 +21,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, email, packageDisplay, amount } = req.body;
+  const { name, email, packageDisplay, amount, who, message } = req.body;
   if (!name || !email || !packageDisplay) {
     return res.status(400).json({ error: 'Missing fields' });
   }
@@ -30,6 +46,13 @@ module.exports = async function handler(req, res) {
     });
     return r.ok;
   }
+
+  const whoLabels = {
+    parent: 'Phụ huynh',
+    student: 'Du học sinh',
+    worker: 'Người đi làm xa',
+    gift: 'Gift card',
+  };
 
   await send(
     email,
@@ -97,8 +120,21 @@ module.exports = async function handler(req, res) {
       <tr><td style="padding:6px 16px 6px 0;color:#888">Email</td><td>${email}</td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888">Gói</td><td>${packageDisplay}</td></tr>
       <tr><td style="padding:6px 16px 6px 0;color:#888">Số tiền</td><td>${amount}đ</td></tr>
+      <tr><td style="padding:6px 16px 6px 0;color:#888">Loại</td><td>${whoLabels[who] || who || ''}</td></tr>
+      ${message ? `<tr><td style="padding:6px 16px 6px 0;color:#888;vertical-align:top">Nội dung</td><td style="white-space:pre-wrap">${message}</td></tr>` : ''}
     </table>`
   );
+
+  await saveBooking({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    name,
+    email,
+    package: packageDisplay,
+    amount,
+    who: who || '',
+    message: message || '',
+    createdAt: new Date().toISOString(),
+  });
 
   return res.status(200).json({ ok: true });
 };
