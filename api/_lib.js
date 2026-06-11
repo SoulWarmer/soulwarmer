@@ -68,4 +68,17 @@ async function ghDelete(path, sha, message) {
   return { status: r.status, data };
 }
 
-module.exports = { verifyToken, ghGet, ghPut, ghDelete };
+async function ghPutBase64(path, base64Content, sha, message) {
+  const body = { message, content: base64Content, branch: BRANCH };
+  if (sha) body.sha = sha;
+  const r = await fetch(`${GH_BASE}/${path}`, {
+    method: 'PUT',
+    headers: ghHeaders(),
+    body: JSON.stringify(body),
+  });
+  let data;
+  try { data = await r.json(); } catch { data = null; }
+  return { status: r.status, data };
+}
+
+module.exports = { verifyToken, ghGet, ghPut, ghPutBase64, ghDelete };
