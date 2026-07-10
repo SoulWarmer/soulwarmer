@@ -54,6 +54,18 @@
 
     .posts-empty { text-align: center; padding: 60px 24px; color: var(--color-text-soft); grid-column: 1/-1; }
 
+    .tool-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      background: white; border: 1px solid var(--color-rose-light);
+      border-radius: var(--radius-md); padding: 22px 26px; margin-bottom: 36px;
+      box-shadow: var(--shadow-soft); transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .tool-banner:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .tool-banner-text h3 { font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600; color: var(--color-text); margin-bottom: 4px; }
+    .tool-banner-text p { font-size: 0.85rem; color: var(--color-text-soft); margin: 0; }
+    .tool-banner-cta { font-size: 0.85rem; font-weight: 600; color: var(--color-rose); white-space: nowrap; }
+    @media (max-width: 600px) { .tool-banner { flex-direction: column; align-items: flex-start; } }
+
     @media (max-width: 900px) { .posts-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 600px) { .posts-grid { grid-template-columns: 1fr; } .filter-bar { justify-content: flex-start; } }
   </style>
@@ -92,6 +104,13 @@
 
   <section class="hub-body">
     <div class="container">
+      <a href="hoi-tho.html" class="tool-banner fade-up">
+        <div class="tool-banner-text">
+          <h3>🌸 Điều hướng hơi thở, thả lỏng vai gáy</h3>
+          <p>Công cụ dẫn nhịp thở ngay trên trình duyệt. Mỗi lượt gần 3 phút, ngày 2 lần.</p>
+        </div>
+        <span class="tool-banner-cta">Tập ngay →</span>
+      </a>
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-cat="all">Tất cả</button>
         <button class="filter-btn" data-cat="truoc-khi-di">Trước khi đi</button>
