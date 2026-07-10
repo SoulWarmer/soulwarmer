@@ -135,6 +135,7 @@
       <nav class="nav-links">
         <a href="about.html">Về chúng tôi</a>
         <a href="services.html">Dịch vụ</a>
+        <a href="hoi-tho.html" style="color:var(--color-rose)">Relaxation</a>
         <a href="content-hub.html">Tài nguyên</a>
         <a href="contact.html">Liên hệ</a>
         <a href="services.html" class="btn btn-primary">Đặt lịch ngay</a>
@@ -146,6 +147,7 @@
     <nav class="nav-mobile" id="mobileMenu">
       <a href="about.html">Về chúng tôi</a>
       <a href="services.html">Dịch vụ</a>
+      <a href="hoi-tho.html" style="color:var(--color-rose)">Relaxation</a>
       <a href="content-hub.html">Tài nguyên</a>
       <a href="contact.html">Liên hệ</a>
       <a href="services.html" class="btn btn-primary" style="text-align:center">Đặt lịch ngay</a>
@@ -196,6 +198,7 @@
             <div class="sess-bar" id="sessBar"><div class="sess-fill" id="sessFill"></div></div>
             <div class="phase-chips" id="phaseChips"></div>
             <div class="tool-actions">
+              <button class="btn btn-primary" onclick="skipPhase()">Qua giai đoạn tiếp →</button>
               <button class="btn btn-outline" id="sessPauseBtn" onclick="togglePause()">Tạm dừng</button>
               <button class="btn btn-outline" onclick="endSession()">Kết thúc</button>
             </div>
@@ -441,6 +444,18 @@
 
       document.getElementById('sessTime').textContent = fmt(sessPhases[idx].sec - inPhase);
       document.getElementById('sessFill').style.width = (elapsed / sessTotalSec * 100) + '%';
+    }
+
+    function skipPhase() {
+      if (pausedAt) togglePause();
+      const elapsed = (Date.now() - sessStartTs - pausedTotal) / 1000;
+      let acc = 0;
+      for (const p of sessPhases) {
+        acc += p.sec;
+        if (elapsed < acc) break;
+      }
+      sessStartTs -= (acc - elapsed) * 1000;
+      sessTick();
     }
 
     function togglePause() {
