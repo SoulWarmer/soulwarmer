@@ -130,7 +130,23 @@
     .sess-mudra .mudra-svg { width: 118px; }
     .mudra-fig { margin: 0; text-align: center; }
     .mudra-fig figcaption { font-size: 0.78rem; font-weight: 600; color: var(--color-rose); margin-top: 4px; }
-    .sess-hint { font-size: 0.86rem; color: var(--color-text-soft); max-width: 440px; margin: 0 auto 22px; line-height: 1.6; }
+    .sess-hint { font-size: 0.86rem; color: var(--color-text-soft); max-width: 440px; margin: 0 auto 18px; line-height: 1.6; }
+
+    .sess-script {
+      text-align: left; max-width: 540px; margin: 0 auto 26px;
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm); padding: 20px 22px;
+      max-height: 320px; overflow-y: auto;
+    }
+    .script-seg + .script-seg { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--color-border); }
+    .script-t { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-rose); margin-bottom: 7px; }
+    .sess-script p, .full-script p { font-size: 1rem; line-height: 1.85; color: var(--color-text); margin: 0; }
+
+    .script-review { margin-top: 26px; border-top: 1px solid var(--color-border); padding-top: 18px; }
+    .script-review summary { cursor: pointer; font-weight: 600; color: var(--color-rose); font-size: 0.9rem; }
+    .full-script { margin-top: 16px; text-align: left; }
+    .full-phase + .full-phase { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--color-border); }
+    .full-phase h5 { font-family: var(--font-heading); font-size: 0.98rem; font-weight: 600; color: var(--color-text); margin-bottom: 12px; }
 
     .mudra-chart { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--color-border); }
     .mudra-chart h4 { font-family: var(--font-heading); font-size: 1rem; font-weight: 600; margin-bottom: 4px; text-align: center; }
@@ -296,6 +312,11 @@
               <button class="btn btn-primary" onclick="startSession()">Bắt đầu buổi tập</button>
             </div>
 
+            <details class="script-review">
+              <summary>Xem toàn bộ lời dẫn (35 phút)</summary>
+              <div class="full-script" id="fullScript"></div>
+            </details>
+
             <div class="mudra-chart">
               <h4>Năm thủ ấn trong bài</h4>
               <p class="chart-sub">Ở Phần 4 chỉ chọn một trong hai ấn Vata Naashak hoặc Vayu.</p>
@@ -334,6 +355,7 @@
             <div class="sess-phase-name" id="sessPhaseName">Chuẩn bị</div>
             <div class="sess-mudra" id="sessMudra"></div>
             <div class="sess-hint" id="sessHint"></div>
+            <div class="sess-script" id="sessScript"></div>
             <div class="sess-time" id="sessTime">10:00</div>
             <div class="sess-next" id="sessNext"></div>
             <div class="sess-bar" id="sessBar"><div class="sess-fill" id="sessFill"></div></div>
@@ -485,15 +507,33 @@
     /* ===================== Buổi tập 35 phút ===================== */
     const DEFAULT_PHASES = [
       { name: 'Chuẩn bị & ổn định', min: 10, mudra: null,
-        hint: 'Ngồi thẳng lưng, thả lỏng vai, hai tay đặt thoải mái trên đầu gối. Thở bụng đều.' },
+        hint: 'Ngồi thẳng lưng, thả lỏng vai, hai tay đặt thoải mái trên đầu gối. Thở bụng đều.',
+        script: [
+          { t: 'Phút 0:00 – 3:00 · Tư thế ngồi', s: 'Chào mừng bạn đến với buổi thực hành thiền định hôm nay. Hãy dành ra 10 phút đầu tiên để chuẩn bị và ổn định cơ thể. Hãy chọn cho mình một tư thế ngồi thật thoải mái, có thể ngồi bán già hoặc kiết già. Giữ cho cột sống thẳng nhưng không căng cứng. Thả lỏng hai vai. Thả lỏng khuôn mặt. Nhẹ nhàng nhắm mắt lại...' },
+          { t: 'Phút 3:00 – 10:00 · Định tâm qua hơi thở bụng', s: 'Bây giờ, hãy mang toàn bộ sự chú ý quay về với hơi thở. Hít vào... bụng từ từ phình lên, căng tròn, tích tụ năng lượng tươi mới. Thở ra... bụng nhẹ nhàng hóp lại, đẩy hết mọi trược khí ra ngoài. Hít vào, bụng phình lên... Thở ra, bụng hóp lại... Hãy duy trì nhịp thở tự nhiên này để tâm trí hoàn toàn lắng dịu...' },
+        ] },
       { name: 'Ấn Varuna', min: 5, mudra: 'varuna',
-        hint: 'Chạm đầu ngón cái với ngón út, ba ngón còn lại duỗi thẳng. Làm mềm và thanh lọc cơ thể.' },
+        hint: 'Chạm đầu ngón cái với ngón út, ba ngón còn lại duỗi thẳng. Làm mềm và thanh lọc cơ thể.',
+        script: [
+          { t: 'Phút 10:00 – 15:00', s: 'Mời bạn nhẹ nhàng chuyển sang thủ ấn đầu tiên: Ấn Varuna, Ấn Thủy. Hãy chạm đầu ngón tay cái và ngón tay út lại với nhau. Ba ngón còn lại (ngón trỏ, ngón giữa và ngón áp út) duỗi thẳng tự nhiên. Đặt mu bàn tay lên gần đầu gối, lòng bàn tay hướng lên. Giữ nguyên tư thế này trong 5 phút và hít thở đều. Hãy quán tưởng dòng năng lượng nước đang lan tỏa, làm mềm mại toàn bộ hệ thống cơ thể, thanh lọc và mang lại sự tươi mát, nhu thuận cho từng tế bào. Hít vào... và thở ra...' },
+        ] },
       { name: 'Ấn Apana', min: 5, mudra: 'apana',
-        hint: 'Chạm đầu ngón cái với ngón giữa và ngón áp út. Khơi thông đường ống, tiêu trừ khí trệ.' },
+        hint: 'Chạm đầu ngón cái với ngón giữa và ngón áp út. Khơi thông đường ống, tiêu trừ khí trệ.',
+        script: [
+          { t: 'Phút 15:00 – 20:00', s: 'Nhẹ nhàng buông lỏng các ngón tay và đổi sang thủ ấn thứ hai: Ấn Apana. Hãy chạm đầu ngón tay giữa và ngón áp út vào đầu ngón tay cái của cả hai tay. Hai ngón còn lại (ngón trỏ và ngón út) duỗi thẳng. Đặt tay lên gần đầu gối. Trong 5 phút hít thở đều đặn này, hãy cảm nhận luồng năng lượng giáng xuống. Ấn Apana đang giúp bạn khơi thông suốt mọi đường ống, thông suốt hệ tiêu hóa, tiêu trừ mọi khí trệ, huyết ứ và giáng khí đạo trệ. Mọi tắc nghẽn, áp lực trong cơ thể đang theo hơi thở ra mà tiêu biến...' },
+        ] },
       { name: 'Ấn Vata Naashak / Vayu', min: 5, mudra: 'choice',
-        hint: 'Chọn một trong hai ấn. Cân bằng phong đại, xoa dịu đau và co giật gân cơ.' },
+        hint: 'Chọn một trong hai ấn. Cân bằng phong đại, xoa dịu đau và co giật gân cơ.',
+        script: [
+          { t: 'Phương án A · Ấn Vata Naashak', s: 'Chúng ta nhẹ nhàng chuyển sang thủ ấn thứ ba: Ấn Vata Naashak. Hãy gập ngón tay trỏ và ngón tay giữa xuống sát gốc của ngón tay cái. Sau đó, dùng ngón tay cái kẹp chặt lấy hai ngón này. Hai ngón còn lại duỗi thẳng, đặt yên trên gần đầu gối. Giữ yên tư thế này trong 5 phút. Hãy để hơi thở sâu và êm dịu giúp bạn dẹp yên Phong Đại (yếu tố gió) bên trong, điều chỉnh cơ thể trở về trạng thái cân bằng bình thường. Cảm nhận sự vững chãi, kiên định, không còn xao động...' },
+          { t: 'Phương án B · Ấn Vayu', s: 'Mời bạn chuyển sang thủ ấn thứ ba: Ấn Vayu. Hãy gập ngón tay trỏ xuống gốc ngón cái và dùng ngón cái kẹp chặt lại. Ba ngón còn lại duỗi thẳng tự nhiên, đặt yên trên gần đầu gối. Hãy giữ ấn Vayu trong 5 phút hít thở đều. Luồng năng lượng này đang tập trung xoa dịu các chứng đau gân cơ, co giật gân cơ, giải tỏa những cơn choáng váng, chóng mặt. Cơ thể bạn đang trở nên nhẹ nhàng, thả lỏng và hoàn toàn bình an...' },
+        ] },
       { name: 'Ấn Gyan & buông xả', min: 10, mudra: 'gyan',
-        hint: 'Chạm đầu ngón cái với ngón trỏ. Năm phút cuối buông lỏng hoàn toàn, thở tự nhiên.' },
+        hint: 'Chạm đầu ngón cái với ngón trỏ. Năm phút cuối buông lỏng hoàn toàn, thở tự nhiên.',
+        script: [
+          { t: 'Phút 25:00 – 30:00 · Ấn Gyan', s: 'Nhẹ nhàng chuyển sang thủ ấn cuối cùng: Ấn Gyan, Ấn Trí Tuệ. Hãy chạm đầu ngón cái và đầu ngón trỏ vào nhau, tạo thành một vòng tròn nhỏ. Ba ngón còn lại duỗi thẳng tự nhiên. Để yên hai bàn tay trên gần đầu gối. Giữ ấn Gyan trong 5 phút tiếp theo. Ấn Gyan giúp bạn tăng cường sự tập trung, ghi nhớ và làm lắng dịu toàn bộ hệ thống thần kinh. Tâm trí bạn lúc này sáng rõ, tĩnh lặng như mặt hồ không gợn sóng...' },
+          { t: 'Phút 30:00 – 35:00 · Buông xả & kết thúc', s: 'Giờ đây, hãy từ từ buông lỏng hoàn toàn các ngón tay. Đặt hai bàn tay ngửa tự nhiên trên đùi. Hãy hít thở bình thường trong 5 phút cuối cùng. Không kiểm soát, không cố gắng. Chỉ đơn giản là cảm nhận sự hòa quyện của dòng năng lượng thông suốt, mềm mại và bình an đang bao bọc khắp cơ thể bạn... (Phút 34:00) Từ từ đưa tâm trí quay trở lại với căn phòng... Cử động nhẹ các ngón tay, ngón chân... Xoa hai lòng bàn tay vào nhau cho thật ấm... Áp nhẹ lên mắt... Nhẹ nhàng mở mắt ra và mỉm cười. Bài tập của chúng ta đến đây là kết thúc. Namaste.' },
+        ] },
     ];
 
     function mudraSvg(id) {
@@ -509,6 +549,21 @@
       } else {
         box.innerHTML = mudraSvg(phase.mudra);
       }
+    }
+
+    function scriptHtml(segs) {
+      return (segs || []).map(seg =>
+        `<div class="script-seg"><div class="script-t">${seg.t}</div><p>${seg.s}</p></div>`).join('');
+    }
+    function renderSessScript(phase) {
+      const box = document.getElementById('sessScript');
+      box.innerHTML = scriptHtml(phase.script);
+      box.style.display = (phase.script && phase.script.length) ? 'block' : 'none';
+      box.scrollTop = 0;
+    }
+    function renderFullScript() {
+      document.getElementById('fullScript').innerHTML = DEFAULT_PHASES.map((p, i) =>
+        `<div class="full-phase"><h5>${i + 1}. ${p.name} · ${p.min} phút</h5>${scriptHtml(p.script)}</div>`).join('');
     }
 
     let sessPhases = [];
@@ -544,7 +599,7 @@
     function startSession() {
       sessPhases = DEFAULT_PHASES.map((p, i) => {
         const v = parseInt(document.getElementById('phaseMin' + i).value, 10);
-        return { name: p.name, sec: ((v >= 1 && v <= 30) ? v : p.min) * 60, mudra: p.mudra, hint: p.hint };
+        return { name: p.name, sec: ((v >= 1 && v <= 30) ? v : p.min) * 60, mudra: p.mudra, hint: p.hint, script: p.script };
       });
       sessTotalSec = sessPhases.reduce((s, p) => s + p.sec, 0);
       sessStartTs = Date.now();
@@ -597,6 +652,7 @@
         document.getElementById('sessPhaseLabel').textContent = `Giai đoạn ${idx + 1}/${sessPhases.length}`;
         document.getElementById('sessPhaseName').textContent = sessPhases[idx].name;
         renderSessMudra(sessPhases[idx]);
+        renderSessScript(sessPhases[idx]);
         document.getElementById('sessHint').textContent = sessPhases[idx].hint || '';
         document.getElementById('sessNext').textContent = idx < sessPhases.length - 1
           ? 'Tiếp theo: ' + sessPhases[idx + 1].name
@@ -764,6 +820,7 @@
     }
 
     renderSetup();
+    renderFullScript();
     pickMode('sess');
   </script>
 </body>
