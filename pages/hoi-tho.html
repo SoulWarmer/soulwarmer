@@ -129,6 +129,10 @@
     .sess-mudra { display: flex; gap: 22px; justify-content: center; align-items: flex-end; margin-bottom: 16px; min-height: 10px; }
     .sess-mudra .mudra-svg { width: 118px; }
     .mudra-fig { margin: 0; text-align: center; }
+    .mudra-media { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .mudra-video { display: none; width: 168px; max-width: 100%; border-radius: 14px; box-shadow: var(--shadow-soft); }
+    .mudra-video.ready { display: block; }
+    .mudra-media:has(.mudra-video.ready) .mudra-svg { width: 76px; opacity: 0.75; }
     .mudra-fig figcaption { font-size: 0.78rem; font-weight: 600; color: var(--color-rose); margin-top: 4px; }
     .sess-hint { font-size: 0.86rem; color: var(--color-text-soft); max-width: 440px; margin: 0 auto 18px; line-height: 1.6; }
 
@@ -319,7 +323,7 @@
 
             <div class="mudra-chart">
               <h4>Năm thủ ấn trong bài</h4>
-              <p class="chart-sub">Ở Phần 4 chỉ chọn một trong hai ấn Vata Naashak hoặc Vayu.</p>
+              <p class="chart-sub">Ở Phần 4 chỉ chọn một trong hai ấn Vata Naashak hoặc Vayu. Khi bạn thêm clip tay thật vào thư mục images/mudras/, video sẽ tự hiện trong lúc tập.</p>
               <div class="mudra-grid">
                 <div class="mudra-cell">
                   <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-varuna"/></svg>
@@ -536,18 +540,23 @@
         ] },
     ];
 
-    function mudraSvg(id) {
-      return `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-${id}"/></svg></figure>`;
+    // Hiện hình vẽ; nếu có clip tay thật ở images/mudras/<id>.mp4 thì video tự hiện lên.
+    function mudraFig(id, caption) {
+      const cap = caption ? `<figcaption>${caption}</figcaption>` : '';
+      return `<figure class="mudra-fig">
+        <div class="mudra-media">
+          <video class="mudra-video" src="../images/mudras/${id}.mp4" muted loop autoplay playsinline preload="metadata"
+                 onloadeddata="this.classList.add('ready')" onerror="this.remove()"></video>
+          <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-${id}"/></svg>
+        </div>${cap}</figure>`;
     }
     function renderSessMudra(phase) {
       const box = document.getElementById('sessMudra');
       if (!phase.mudra) { box.innerHTML = ''; return; }
       if (phase.mudra === 'choice') {
-        box.innerHTML =
-          `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vata"/></svg><figcaption>Vata Naashak</figcaption></figure>` +
-          `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vayu"/></svg><figcaption>Vayu</figcaption></figure>`;
+        box.innerHTML = mudraFig('vata', 'Vata Naashak') + mudraFig('vayu', 'Vayu');
       } else {
-        box.innerHTML = mudraSvg(phase.mudra);
+        box.innerHTML = mudraFig(phase.mudra);
       }
     }
 
