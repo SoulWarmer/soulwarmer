@@ -119,15 +119,122 @@
       font-size: 0.83rem; color: var(--color-text-soft); line-height: 1.7; text-align: center;
     }
 
+    /* ===== Thủ ấn (mudra) ===== */
+    .mudra-svg { width: 100%; height: auto; display: block; }
+    .mudra-svg .ol { fill: none; stroke: #C77E93; stroke-width: 22; stroke-linecap: round; stroke-linejoin: round; }
+    .mudra-svg .fl { fill: none; stroke: #F2C7D3; stroke-width: 15; stroke-linecap: round; stroke-linejoin: round; }
+    .mudra-svg .palm { fill: #F2C7D3; stroke: #C77E93; stroke-width: 2.5; stroke-linejoin: round; }
+    .mudra-svg .ring { fill: #FFF7FA; stroke: #C77E93; stroke-width: 3.5; }
+
+    .sess-mudra { display: flex; gap: 22px; justify-content: center; align-items: flex-end; margin-bottom: 16px; min-height: 10px; }
+    .sess-mudra .mudra-svg { width: 118px; }
+    .mudra-fig { margin: 0; text-align: center; }
+    .mudra-fig figcaption { font-size: 0.78rem; font-weight: 600; color: var(--color-rose); margin-top: 4px; }
+    .sess-hint { font-size: 0.86rem; color: var(--color-text-soft); max-width: 440px; margin: 0 auto 22px; line-height: 1.6; }
+
+    .mudra-chart { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--color-border); }
+    .mudra-chart h4 { font-family: var(--font-heading); font-size: 1rem; font-weight: 600; margin-bottom: 4px; text-align: center; }
+    .mudra-chart .chart-sub { font-size: 0.82rem; color: var(--color-text-soft); text-align: center; margin-bottom: 18px; }
+    .mudra-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .mudra-cell { text-align: center; }
+    .mudra-cell .mudra-svg { width: 100%; max-width: 92px; margin: 0 auto 8px; }
+    .mudra-cell strong { display: block; font-size: 0.8rem; color: var(--color-text); margin-bottom: 3px; }
+    .mudra-cell span { font-size: 0.72rem; color: var(--color-text-soft); line-height: 1.45; display: block; }
+
     @media (max-width: 640px) {
       .mode-grid { grid-template-columns: 1fr; }
       .panel-card { padding: 28px 20px; }
       .circle-wrap { height: 240px; }
       .breath-circle { width: 140px; height: 140px; }
+      .mudra-grid { grid-template-columns: repeat(2, 1fr); gap: 20px 14px; }
+      .sess-mudra .mudra-svg { width: 100px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ===== Định nghĩa hình thủ ấn (dùng lại bằng <use>) ===== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- Varuna: ngón cái chạm ngón út; trỏ, giữa, áp út duỗi thẳng -->
+      <symbol id="m-varuna" viewBox="0 0 190 300">
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="78" y1="178" x2="78" y2="58"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M143 173 C138 126 100 128 68 136"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="78" y1="178" x2="78" y2="58"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M143 173 C138 126 100 128 68 136"/>
+        <rect fill="#F2C7D3" stroke="#C77E93" stroke-width="2.5" stroke-linejoin="round" x="52" y="150" width="100" height="120" rx="32"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C44 180 48 150 68 136"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C44 180 48 150 68 136"/>
+        <circle fill="#FFF7FA" stroke="#C77E93" stroke-width="3.5" cx="68" cy="136" r="11"/>
+      </symbol>
+
+      <!-- Apana: ngón cái chạm ngón giữa và ngón áp út; trỏ, út duỗi thẳng -->
+      <symbol id="m-apana" viewBox="0 0 190 300">
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="78" y1="178" x2="78" y2="58"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M100 178 C98 130 84 130 68 137"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M122 176 C116 126 88 134 74 143"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="78" y1="178" x2="78" y2="58"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M100 178 C98 130 84 130 68 137"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M122 176 C116 126 88 134 74 143"/>
+        <rect fill="#F2C7D3" stroke="#C77E93" stroke-width="2.5" stroke-linejoin="round" x="52" y="150" width="100" height="120" rx="32"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C44 180 48 152 70 139"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C44 180 48 152 70 139"/>
+        <circle fill="#FFF7FA" stroke="#C77E93" stroke-width="3.5" cx="71" cy="139" r="12"/>
+      </symbol>
+
+      <!-- Vata Naashak: gập trỏ và giữa vào gốc ngón cái, ngón cái kẹp lại; áp út, út duỗi -->
+      <symbol id="m-vata" viewBox="0 0 190 300">
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <rect fill="#F2C7D3" stroke="#C77E93" stroke-width="2.5" stroke-linejoin="round" x="52" y="150" width="100" height="120" rx="32"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="84" y1="170" x2="82" y2="130"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="101" y1="170" x2="100" y2="128"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="84" y1="170" x2="82" y2="130"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="101" y1="170" x2="100" y2="128"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="58" y1="205" x2="104" y2="150"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="58" y1="205" x2="104" y2="150"/>
+      </symbol>
+
+      <!-- Vayu: gập ngón trỏ vào gốc ngón cái, ngón cái kẹp lại; giữa, áp út, út duỗi -->
+      <symbol id="m-vayu" viewBox="0 0 190 300">
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <rect fill="#F2C7D3" stroke="#C77E93" stroke-width="2.5" stroke-linejoin="round" x="52" y="150" width="100" height="120" rx="32"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="85" y1="172" x2="83" y2="130"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="85" y1="172" x2="83" y2="130"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="58" y1="205" x2="96" y2="150"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="58" y1="205" x2="96" y2="150"/>
+      </symbol>
+
+      <!-- Gyan: ngón cái chạm ngón trỏ; giữa, áp út, út duỗi thẳng -->
+      <symbol id="m-gyan" viewBox="0 0 190 300">
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M82 176 C84 144 62 138 70 140"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="100" y1="178" x2="100" y2="46"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="122" y1="178" x2="122" y2="56"/>
+        <line fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" x1="143" y1="178" x2="143" y2="80"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M82 176 C84 144 62 138 70 140"/>
+        <rect fill="#F2C7D3" stroke="#C77E93" stroke-width="2.5" stroke-linejoin="round" x="52" y="150" width="100" height="120" rx="32"/>
+        <path fill="none" stroke="#C77E93" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C46 180 50 154 70 140"/>
+        <path fill="none" stroke="#F2C7D3" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" d="M60 210 C46 180 50 154 70 140"/>
+        <circle fill="#FFF7FA" stroke="#C77E93" stroke-width="3.5" cx="70" cy="140" r="11"/>
+      </symbol>
+    </defs>
+  </svg>
 
   <header class="nav">
     <div class="nav-inner">
@@ -188,11 +295,45 @@
             <div class="tool-actions">
               <button class="btn btn-primary" onclick="startSession()">Bắt đầu buổi tập</button>
             </div>
+
+            <div class="mudra-chart">
+              <h4>Năm thủ ấn trong bài</h4>
+              <p class="chart-sub">Ở Phần 4 chỉ chọn một trong hai ấn Vata Naashak hoặc Vayu.</p>
+              <div class="mudra-grid">
+                <div class="mudra-cell">
+                  <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-varuna"/></svg>
+                  <strong>Ấn Varuna</strong>
+                  <span>Ngón cái chạm ngón út, ba ngón kia duỗi thẳng. Làm mềm, thanh lọc.</span>
+                </div>
+                <div class="mudra-cell">
+                  <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-apana"/></svg>
+                  <strong>Ấn Apana</strong>
+                  <span>Ngón cái chạm ngón giữa và áp út. Khơi thông, tiêu trừ khí trệ.</span>
+                </div>
+                <div class="mudra-cell">
+                  <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vata"/></svg>
+                  <strong>Ấn Vata Naashak</strong>
+                  <span>Gập trỏ và giữa vào gốc ngón cái, ngón cái kẹp lại. Cân bằng phong đại.</span>
+                </div>
+                <div class="mudra-cell">
+                  <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vayu"/></svg>
+                  <strong>Ấn Vayu</strong>
+                  <span>Gập trỏ vào gốc ngón cái, ngón cái kẹp lại. Xoa dịu đau, co giật gân cơ.</span>
+                </div>
+                <div class="mudra-cell">
+                  <svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-gyan"/></svg>
+                  <strong>Ấn Gyan</strong>
+                  <span>Ngón cái chạm ngón trỏ, ba ngón kia duỗi thẳng. Tăng tập trung, an định.</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div id="sessRun" class="sess-run" style="display:none">
             <div class="sess-phase-label" id="sessPhaseLabel">Giai đoạn 1/5</div>
             <div class="sess-phase-name" id="sessPhaseName">Chuẩn bị</div>
+            <div class="sess-mudra" id="sessMudra"></div>
+            <div class="sess-hint" id="sessHint"></div>
             <div class="sess-time" id="sessTime">10:00</div>
             <div class="sess-next" id="sessNext"></div>
             <div class="sess-bar" id="sessBar"><div class="sess-fill" id="sessFill"></div></div>
@@ -343,12 +484,32 @@
 
     /* ===================== Buổi tập 35 phút ===================== */
     const DEFAULT_PHASES = [
-      { name: 'Chuẩn bị', min: 10 },
-      { name: 'Thông tắc nghẽn', min: 5 },
-      { name: 'Thư giãn gân', min: 5 },
-      { name: 'Giải tỏa cơn đau', min: 5 },
-      { name: 'Học thở', min: 10 },
+      { name: 'Chuẩn bị & ổn định', min: 10, mudra: null,
+        hint: 'Ngồi thẳng lưng, thả lỏng vai, hai tay đặt thoải mái trên đầu gối. Thở bụng đều.' },
+      { name: 'Ấn Varuna', min: 5, mudra: 'varuna',
+        hint: 'Chạm đầu ngón cái với ngón út, ba ngón còn lại duỗi thẳng. Làm mềm và thanh lọc cơ thể.' },
+      { name: 'Ấn Apana', min: 5, mudra: 'apana',
+        hint: 'Chạm đầu ngón cái với ngón giữa và ngón áp út. Khơi thông đường ống, tiêu trừ khí trệ.' },
+      { name: 'Ấn Vata Naashak / Vayu', min: 5, mudra: 'choice',
+        hint: 'Chọn một trong hai ấn. Cân bằng phong đại, xoa dịu đau và co giật gân cơ.' },
+      { name: 'Ấn Gyan & buông xả', min: 10, mudra: 'gyan',
+        hint: 'Chạm đầu ngón cái với ngón trỏ. Năm phút cuối buông lỏng hoàn toàn, thở tự nhiên.' },
     ];
+
+    function mudraSvg(id) {
+      return `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-${id}"/></svg></figure>`;
+    }
+    function renderSessMudra(phase) {
+      const box = document.getElementById('sessMudra');
+      if (!phase.mudra) { box.innerHTML = ''; return; }
+      if (phase.mudra === 'choice') {
+        box.innerHTML =
+          `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vata"/></svg><figcaption>Vata Naashak</figcaption></figure>` +
+          `<figure class="mudra-fig"><svg class="mudra-svg" viewBox="0 0 190 300"><use href="#m-vayu"/></svg><figcaption>Vayu</figcaption></figure>`;
+      } else {
+        box.innerHTML = mudraSvg(phase.mudra);
+      }
+    }
 
     let sessPhases = [];
     let sessTicker = null;
@@ -383,7 +544,7 @@
     function startSession() {
       sessPhases = DEFAULT_PHASES.map((p, i) => {
         const v = parseInt(document.getElementById('phaseMin' + i).value, 10);
-        return { name: p.name, sec: ((v >= 1 && v <= 30) ? v : p.min) * 60 };
+        return { name: p.name, sec: ((v >= 1 && v <= 30) ? v : p.min) * 60, mudra: p.mudra, hint: p.hint };
       });
       sessTotalSec = sessPhases.reduce((s, p) => s + p.sec, 0);
       sessStartTs = Date.now();
@@ -435,6 +596,8 @@
         lastPhaseIdx = idx;
         document.getElementById('sessPhaseLabel').textContent = `Giai đoạn ${idx + 1}/${sessPhases.length}`;
         document.getElementById('sessPhaseName').textContent = sessPhases[idx].name;
+        renderSessMudra(sessPhases[idx]);
+        document.getElementById('sessHint').textContent = sessPhases[idx].hint || '';
         document.getElementById('sessNext').textContent = idx < sessPhases.length - 1
           ? 'Tiếp theo: ' + sessPhases[idx + 1].name
           : 'Giai đoạn cuối cùng';
