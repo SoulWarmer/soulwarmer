@@ -61,6 +61,21 @@
     .sound-row { display: flex; align-items: center; gap: 10px; margin-top: 20px; font-size: 0.85rem; color: var(--color-text-soft); }
     .sound-row input { width: 18px; height: 18px; accent-color: var(--color-rose); }
 
+    .choice4-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; font-size: 0.85rem; color: var(--color-text-soft); }
+    .choice4-row > span { font-weight: 500; }
+    .choice4-row label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .choice4-row input { width: 16px; height: 16px; accent-color: var(--color-rose); }
+
+    .voice-badge {
+      display: none; align-items: center; gap: 7px; justify-content: center;
+      margin: 0 auto 16px; padding: 6px 14px; border-radius: 16px;
+      background: var(--color-rose-pale); color: var(--color-rose);
+      font-size: 0.78rem; font-weight: 600; width: fit-content;
+    }
+    .voice-badge.on { display: flex; }
+    .voice-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-rose); animation: voicePulse 1s ease-in-out infinite; }
+    @keyframes voicePulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
     .tool-actions { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
 
     .sess-run { text-align: center; }
@@ -295,7 +310,7 @@
       <div class="mode-grid">
         <button class="mode-card fade-up" id="modeSessBtn" onclick="pickMode('sess')">
           <h3>Buổi tập 35 phút</h3>
-          <p>Đồng hồ 5 giai đoạn dành cho buổi hướng dẫn trực tiếp. Chuông nhẹ báo khi chuyển phần.</p>
+          <p>Đồng hồ 5 giai đoạn, tự phát giọng dẫn đã thu âm và hiện thủ ấn theo từng phần.</p>
         </button>
         <button class="mode-card fade-up" id="modeBreathBtn" onclick="pickMode('breath')">
           <h3>Tự tập thở</h3>
@@ -307,11 +322,19 @@
       <div class="tool-panel" id="panelSess">
         <div class="panel-card">
 
+          <audio id="voice" preload="none"></audio>
+
           <div id="sessSetup">
             <h3 style="font-size:1.15rem; margin-bottom:16px">Thời lượng từng giai đoạn</h3>
             <div id="phaseSetupList"></div>
             <div class="setup-total">Tổng cộng: <strong id="setupTotal">35 phút</strong></div>
-            <label class="sound-row"><input type="checkbox" id="sessSound" checked> Chuông báo khi chuyển giai đoạn</label>
+            <label class="sound-row"><input type="checkbox" id="sessVoice" checked> Phát giọng dẫn đã thu âm theo từng phần</label>
+            <div class="choice4-row">
+              <span>Phần 4 phát giọng:</span>
+              <label><input type="radio" name="choice4" value="thoai-4a" checked> Vata Naashak</label>
+              <label><input type="radio" name="choice4" value="thoai-4b"> Vayu</label>
+            </div>
+            <label class="sound-row"><input type="checkbox" id="sessSound"> Thêm chuông báo khi chuyển giai đoạn</label>
             <div class="tool-actions">
               <button class="btn btn-primary" onclick="startSession()">Bắt đầu buổi tập</button>
             </div>
@@ -357,6 +380,7 @@
           <div id="sessRun" class="sess-run" style="display:none">
             <div class="sess-phase-label" id="sessPhaseLabel">Giai đoạn 1/5</div>
             <div class="sess-phase-name" id="sessPhaseName">Chuẩn bị</div>
+            <div class="voice-badge" id="voiceBadge"><span class="dot"></span> Đang phát giọng dẫn</div>
             <div class="sess-mudra" id="sessMudra"></div>
             <div class="sess-hint" id="sessHint"></div>
             <div class="sess-script" id="sessScript"></div>
@@ -508,6 +532,38 @@
       document.getElementById('panelBreath').classList.toggle('show', mode === 'breath');
     }
 
+    /* ===== Giọng dẫn thu âm (audio/thoai-*.mp3) ===== */
+    // Cue phát vào từng phần: off = số giây tính từ đầu phần đó.
+    const PHASE_CUES = [
+      [{ off: 0, file: 'thoai-1' }],
+      [{ off: 0, file: 'thoai-2' }],
+      [{ off: 0, file: 'thoai-3' }],
+      [{ off: 0, file: 'choice' }],
+      [{ off: 0, file: 'thoai-5a' }, { off: 300, file: 'thoai-5b' }],
+    ];
+    let voiceEl = null;
+    let sessCues = [];
+    let lastElapsed = -1;
+    let resumeVoice = false;
+
+    function voiceOn() { const c = document.getElementById('sessVoice'); return c && c.checked; }
+    function setVoiceBadge(on) { const b = document.getElementById('voiceBadge'); if (b) b.classList.toggle('on', on); }
+    function playVoice(file) {
+      if (!voiceEl || !file) return;
+      voiceEl.src = `../audio/${file}.mp3`;
+      voiceEl.currentTime = 0;
+      const p = voiceEl.play();
+      if (p && p.catch) p.catch(() => {});
+    }
+    function stopVoice() { if (voiceEl) { try { voiceEl.pause(); } catch (e) {} } setVoiceBadge(false); }
+    function initVoice() {
+      voiceEl = document.getElementById('voice');
+      if (!voiceEl) return;
+      voiceEl.addEventListener('playing', () => setVoiceBadge(true));
+      voiceEl.addEventListener('ended', () => setVoiceBadge(false));
+      voiceEl.addEventListener('pause', () => setVoiceBadge(false));
+    }
+
     /* ===================== Buổi tập 35 phút ===================== */
     const DEFAULT_PHASES = [
       { name: 'Chuẩn bị & ổn định', min: 10, mudra: null,
@@ -616,6 +672,23 @@
       pausedAt = null;
       lastPhaseIdx = -1;
 
+      // Lên lịch phát giọng dẫn theo mốc thời gian tuyệt đối
+      stopVoice();
+      sessCues = [];
+      lastElapsed = -1;
+      resumeVoice = false;
+      if (voiceOn()) {
+        const sel = document.querySelector('input[name="choice4"]:checked');
+        const choice = sel ? sel.value : 'thoai-4a';
+        let acc = 0;
+        sessPhases.forEach((p, i) => {
+          (PHASE_CUES[i] || []).forEach(c => {
+            if (c.off < p.sec) sessCues.push({ at: acc + c.off, file: c.file === 'choice' ? choice : c.file });
+          });
+          acc += p.sec;
+        });
+      }
+
       const bar = document.getElementById('sessBar');
       bar.querySelectorAll('.sess-tick').forEach(t => t.remove());
       let acc = 0;
@@ -643,11 +716,18 @@
       if (elapsed >= sessTotalSec) {
         clearInterval(sessTicker);
         keepAwake(false);
+        stopVoice();
         if (document.getElementById('sessSound').checked) chime(2);
         document.getElementById('sessRun').style.display = 'none';
         document.getElementById('sessDone').style.display = 'block';
         return;
       }
+
+      // Phát giọng dẫn khi vượt qua mốc cue
+      for (const cue of sessCues) {
+        if (lastElapsed < cue.at && cue.at <= elapsed) { stopVoice(); playVoice(cue.file); }
+      }
+      lastElapsed = elapsed;
 
       let acc = 0, idx = 0, inPhase = elapsed;
       for (let i = 0; i < sessPhases.length; i++) {
@@ -656,7 +736,7 @@
       }
 
       if (idx !== lastPhaseIdx) {
-        if (lastPhaseIdx !== -1 && document.getElementById('sessSound').checked) chime(1);
+        if (lastPhaseIdx !== -1 && document.getElementById('sessSound').checked && !voiceOn()) chime(1);
         lastPhaseIdx = idx;
         document.getElementById('sessPhaseLabel').textContent = `Giai đoạn ${idx + 1}/${sessPhases.length}`;
         document.getElementById('sessPhaseName').textContent = sessPhases[idx].name;
@@ -676,6 +756,7 @@
 
     function skipPhase() {
       if (pausedAt) togglePause();
+      stopVoice();
       const elapsed = (Date.now() - sessStartTs - pausedTotal) / 1000;
       let acc = 0;
       for (const p of sessPhases) {
@@ -683,6 +764,7 @@
         if (elapsed < acc) break;
       }
       sessStartTs -= (acc - elapsed) * 1000;
+      lastElapsed = acc - 0.5;   // để cue mở đầu phần kế tiếp được phát
       sessTick();
     }
 
@@ -692,15 +774,18 @@
         pausedTotal += Date.now() - pausedAt;
         pausedAt = null;
         btn.textContent = 'Tạm dừng';
+        if (resumeVoice && voiceEl) { const p = voiceEl.play(); if (p && p.catch) p.catch(() => {}); resumeVoice = false; }
       } else {
         pausedAt = Date.now();
         btn.textContent = 'Tiếp tục';
+        if (voiceEl && !voiceEl.paused) { resumeVoice = true; voiceEl.pause(); }
       }
     }
 
     function endSession() {
       clearInterval(sessTicker);
       keepAwake(false);
+      stopVoice();
       resetSession();
     }
 
@@ -830,6 +915,7 @@
 
     renderSetup();
     renderFullScript();
+    initVoice();
     pickMode('sess');
   </script>
 </body>
