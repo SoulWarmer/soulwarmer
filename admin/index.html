@@ -486,6 +486,7 @@
                 <option value="">Chọn chủ đề</option>
               </select>
               <button type="button" class="btn-ghost" style="white-space:nowrap; padding:0 14px" onclick="showNewCategory()">+ Chủ đề mới</button>
+              <button type="button" class="btn-ghost" style="white-space:nowrap; padding:0 12px" onclick="deleteCategory()" title="Xóa chủ đề đang chọn">🗑</button>
             </div>
             <div id="newCategoryRow" style="display:none; gap:8px; margin-top:8px">
               <input class="form-input" type="text" id="fNewCategory" placeholder="Tên chủ đề mới, ví dụ: Ăn uống ở Mỹ" style="flex:1" />
@@ -561,6 +562,29 @@ async function addCategory() {
     CAT[d.slug] = d.label;
     populateCategorySelect(d.slug);
     hideNewCategory();
+  } catch (e) {
+    alert('Lỗi kết nối: ' + (e && e.message ? e.message : e));
+  }
+}
+
+async function deleteCategory() {
+  const sel = document.getElementById('fCategory');
+  const slug = sel.value;
+  if (!slug) { alert('Chọn một chủ đề trong danh sách trước.'); return; }
+  const label = CAT[slug] || slug;
+  if (!confirm(`Xóa chủ đề "${label}"? Chỉ xóa được nếu không còn bài viết nào dùng.`)) return;
+  try {
+    const r = await fetch('/api/admin/categories', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ slug }),
+    });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || 'Lỗi xóa chủ đề.'); return; }
+    CATS = CATS.filter(c => c.slug !== slug);
+    delete CAT[slug];
+    populateCategorySelect('');
   } catch (e) {
     alert('Lỗi kết nối: ' + (e && e.message ? e.message : e));
   }

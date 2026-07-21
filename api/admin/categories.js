@@ -2,7 +2,7 @@ const { verifyToken, ghGet, ghPut, toSlug } = require('../_lib');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -47,6 +47,39 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(200).json({ slug, label: label.trim() });
+  }
+
+  if (req.method === 'DELETE') {
+    const { slug } = req.body || {};
+    if (!slug) return res.status(400).json({ error: 'Thiếu slug' });
+
+    const { status: pStatus, data: pData } = await ghGet('data/posts.json');
+    if (pStatus === 200) {
+      const posts = JSON.parse(Buffer.from(pData.content, 'base64').toString('utf8'));
+      const inUse = posts.filter(p => p.category === slug).length;
+      if (inUse > 0) {
+        return res.status(409).json({ error: `Còn ${inUse} bài viết đang dùng chủ đề này. Đổi chủ đề của bài đó trước khi xóa.` });
+      }
+    }
+
+    const { status: jStatus, data: jData } = await ghGet('data/categories.json');
+    if (jStatus !== 200) return res.status(500).json({ error: 'Lỗi đọc categories.json' });
+    const existing = JSON.parse(Buffer.from(jData.content, 'base64').toString('utf8'));
+    const next = existing.filter(c => c.slug !== slug);
+    if (next.length === existing.length) return res.status(404).json({ error: 'Không tìm thấy chủ đề' });
+
+    const { status: writeStatus, data: writeData } = await ghPut(
+      'data/categories.json',
+      JSON.stringify(next, null, 2),
+      jData.sha,
+      `Delete category: ${slug}`
+    );
+    if (writeStatus !== 200) {
+      const ghMsg = writeData && writeData.message ? writeData.message : 'không rõ';
+      return res.status(500).json({ error: `Lỗi xóa chủ đề (GitHub ${writeStatus}: ${ghMsg})` });
+    }
+
+    return res.status(200).json({ ok: true });
   }
 
   return res.status(405).end();
