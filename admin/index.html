@@ -584,10 +584,10 @@ async function login() {
       localStorage.setItem('sw_admin_token', token);
       showDashboard();
     } else {
-      err.textContent = d.error || 'Sai mật khẩu';
+      err.textContent = d.error || `Lỗi ${r.status}`;
     }
-  } catch {
-    err.textContent = 'Lỗi kết nối. Thử lại nhé.';
+  } catch (e) {
+    err.textContent = 'Lỗi kết nối: ' + (e && e.message ? e.message : e);
   }
   btn.disabled = false;
   btn.textContent = 'Đăng nhập';
