@@ -70,8 +70,12 @@ module.exports = async function handler(req, res) {
     const slug = `${date}-${toSlug(title)}`;
     const mdContent = buildMd(title, date, category, summary, body);
 
-    const { status: writeStatus } = await ghPut(`posts/${slug}.md`, mdContent, undefined, `Add post: ${title}`);
-    if (writeStatus !== 201) return res.status(500).json({ error: 'Lỗi lưu bài viết (slug có thể đã tồn tại)' });
+    const { status: writeStatus, data: writeData } = await ghPut(`posts/${slug}.md`, mdContent, undefined, `Add post: ${title}`);
+    if (writeStatus !== 201) {
+      if (writeStatus === 422) return res.status(409).json({ error: 'Bài viết với tiêu đề và ngày này đã tồn tại. Đổi tiêu đề hoặc ngày đăng.' });
+      const ghMsg = writeData && writeData.message ? writeData.message : 'không rõ';
+      return res.status(500).json({ error: `Lỗi lưu bài viết (GitHub ${writeStatus}: ${ghMsg})` });
+    }
 
     // Update posts.json
     const { status: jStatus, data: jData } = await ghGet('data/posts.json');
