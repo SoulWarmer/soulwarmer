@@ -1,3 +1,4 @@
+// Danh mục dự phòng, dùng khi chưa tải xong data/categories.json (nguồn thật, có thể có thêm chủ đề mới từ admin)
 const categoryLabels = {
   'soc-van-hoa': 'Sốc văn hóa',
   'ngon-ngu-ket-noi': 'Ngôn ngữ kết nối',
@@ -8,6 +9,19 @@ const categoryLabels = {
   'chuan-bi-truoc-bay': 'Chuẩn bị trước bay',
   'canh-bao-di-lam': 'Cảnh báo đi làm',
 };
+let categoryList = Object.entries(categoryLabels).map(([slug, label]) => ({ slug, label }));
+
+window.categoryLabelsReady = fetch('/data/categories.json')
+  .then(r => r.ok ? r.json() : null)
+  .then(cats => {
+    if (Array.isArray(cats) && cats.length) {
+      categoryList = cats;
+      Object.keys(categoryLabels).forEach(k => delete categoryLabels[k]);
+      cats.forEach(c => { categoryLabels[c.slug] = c.label; });
+    }
+    return { categoryLabels, categoryList };
+  })
+  .catch(() => ({ categoryLabels, categoryList }));
 
 // Mobile navigation
 const hamburger = document.getElementById('hamburger');

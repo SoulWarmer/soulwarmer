@@ -1,5 +1,21 @@
 const crypto = require('crypto');
 
+function toSlug(str) {
+  return str
+    .toLowerCase()
+    .replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g, 'a')
+    .replace(/[èéẹẻẽêềếệểễ]/g, 'e')
+    .replace(/[ìíịỉĩ]/g, 'i')
+    .replace(/[òóọỏõôồốộổỗơờớợởỡ]/g, 'o')
+    .replace(/[ùúụủũưừứựửữ]/g, 'u')
+    .replace(/[ỳýỵỷỹ]/g, 'y')
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 const REPO = 'SoulWarmer/soulwarmer';
 const BRANCH = 'main';
 const GH_BASE = `https://api.github.com/repos/${REPO}/contents`;
@@ -81,4 +97,4 @@ async function ghPutBase64(path, base64Content, sha, message) {
   return { status: r.status, data };
 }
 
-module.exports = { verifyToken, ghGet, ghPut, ghPutBase64, ghDelete };
+module.exports = { verifyToken, ghGet, ghPut, ghPutBase64, ghDelete, toSlug };

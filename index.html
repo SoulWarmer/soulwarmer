@@ -247,9 +247,11 @@
 
   <script src="js/main.js"></script>
   <script>
-    fetch('data/posts.json')
-      .then(r => r.json())
-      .then(posts => {
+    Promise.all([
+      fetch('data/posts.json').then(r => r.json()),
+      window.categoryLabelsReady,
+    ])
+      .then(([posts]) => {
         const grid = document.getElementById('homePostsGrid');
         const latest = posts.slice(0, 3);
         if (!latest.length) { grid.innerHTML = '<p class="posts-loading">Chưa có bài viết.</p>'; return; }

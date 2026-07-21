@@ -1,0 +1,10 @@
+[
+  { "slug": "truoc-khi-di", "label": "Trước khi đi" },
+  { "slug": "chuan-bi-truoc-bay", "label": "Chuẩn bị trước bay" },
+  { "slug": "canh-bao-di-lam", "label": "Cảnh báo đi làm" },
+  { "slug": "soc-van-hoa", "label": "Sốc văn hóa" },
+  { "slug": "ngon-ngu-ket-noi", "label": "Ngôn ngữ kết nối" },
+  { "slug": "ban-do-thich-nghi", "label": "Bản đồ thích nghi" },
+  { "slug": "quan-tri-noi-lo", "label": "Quản trị nỗi lo" },
+  { "slug": "tinh-huong-kho", "label": "Tình huống khó" }
+]

@@ -115,14 +115,6 @@
       </a>
       <div class="filter-bar" id="filterBar">
         <button class="filter-btn active" data-cat="all">Tất cả</button>
-        <button class="filter-btn" data-cat="truoc-khi-di">Trước khi đi</button>
-        <button class="filter-btn" data-cat="canh-bao-di-lam">Cảnh báo đi làm</button>
-        <button class="filter-btn" data-cat="chuan-bi-truoc-bay">Chuẩn bị trước bay</button>
-        <button class="filter-btn" data-cat="soc-van-hoa">Sốc văn hóa</button>
-        <button class="filter-btn" data-cat="ngon-ngu-ket-noi">Ngôn ngữ kết nối</button>
-        <button class="filter-btn" data-cat="ban-do-thich-nghi">Bản đồ thích nghi</button>
-        <button class="filter-btn" data-cat="quan-tri-noi-lo">Quản trị nỗi lo</button>
-        <button class="filter-btn" data-cat="tinh-huong-kho">Tình huống khó</button>
       </div>
       <div class="posts-grid" id="postsGrid">
         <div class="posts-empty">Đang tải bài viết...</div>
@@ -198,9 +190,23 @@
 
     let allPosts = [];
 
-    fetch('../data/posts.json')
-      .then(r => r.json())
-      .then(posts => {
+    function renderFilterBar() {
+      const bar = document.getElementById('filterBar');
+      categoryList.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.cat = c.slug;
+        btn.textContent = c.label;
+        bar.appendChild(btn);
+      });
+    }
+
+    Promise.all([
+      fetch('../data/posts.json').then(r => r.json()),
+      window.categoryLabelsReady,
+    ])
+      .then(([posts]) => {
+        renderFilterBar();
         allPosts = posts;
         renderPosts(allPosts);
       })

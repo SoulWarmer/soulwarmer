@@ -481,17 +481,17 @@
           </div>
           <div>
             <label class="form-lbl">Chủ đề</label>
-            <select class="form-input" id="fCategory">
-              <option value="">Chọn chủ đề</option>
-              <option value="truoc-khi-di">Trước khi đi</option>
-              <option value="chuan-bi-truoc-bay">Chuẩn bị trước bay</option>
-              <option value="canh-bao-di-lam">Cảnh báo đi làm</option>
-              <option value="soc-van-hoa">Sốc văn hóa</option>
-              <option value="ngon-ngu-ket-noi">Ngôn ngữ kết nối</option>
-              <option value="ban-do-thich-nghi">Bản đồ thích nghi</option>
-              <option value="quan-tri-noi-lo">Quản trị nỗi lo</option>
-              <option value="tinh-huong-kho">Tình huống khó</option>
-            </select>
+            <div style="display:flex; gap:8px">
+              <select class="form-input" id="fCategory" style="flex:1">
+                <option value="">Chọn chủ đề</option>
+              </select>
+              <button type="button" class="btn-ghost" style="white-space:nowrap; padding:0 14px" onclick="showNewCategory()">+ Chủ đề mới</button>
+            </div>
+            <div id="newCategoryRow" style="display:none; gap:8px; margin-top:8px">
+              <input class="form-input" type="text" id="fNewCategory" placeholder="Tên chủ đề mới, ví dụ: Ăn uống ở Mỹ" style="flex:1" />
+              <button type="button" class="btn-ghost" onclick="addCategory()">Thêm</button>
+              <button type="button" class="btn-ghost" onclick="hideNewCategory()">Hủy</button>
+            </div>
           </div>
           <div class="span2">
             <label class="form-lbl">Tóm tắt</label>
@@ -516,12 +516,55 @@
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <script>
 const WHO = { parent:'Phụ huynh', student:'Du học sinh', worker:'Người đi làm xa', gift:'Gift card' };
-const CAT = {
-  'truoc-khi-di':'Trước khi đi', 'chuan-bi-truoc-bay':'Chuẩn bị trước bay',
-  'canh-bao-di-lam':'Cảnh báo đi làm', 'soc-van-hoa':'Sốc văn hóa',
-  'ngon-ngu-ket-noi':'Ngôn ngữ kết nối', 'ban-do-thich-nghi':'Bản đồ thích nghi',
-  'quan-tri-noi-lo':'Quản trị nỗi lo', 'tinh-huong-kho':'Tình huống khó',
-};
+let CATS = []; // [{slug, label}], tải từ /api/admin/categories
+let CAT = {};  // map slug -> label, dựng lại mỗi khi CATS đổi
+
+async function loadCategories() {
+  try {
+    const r = await fetch('/api/admin/categories', { headers: { Authorization: `Bearer ${token}` } });
+    if (r.status === 401) { logout(); return; }
+    CATS = await r.json();
+    CAT = Object.fromEntries(CATS.map(c => [c.slug, c.label]));
+    populateCategorySelect();
+  } catch (e) { /* giữ danh sách rỗng, chọn chủ đề vẫn dùng được sau khi thêm mới */ }
+}
+
+function populateCategorySelect(selectSlug) {
+  const sel = document.getElementById('fCategory');
+  const keep = selectSlug !== undefined ? selectSlug : sel.value;
+  sel.innerHTML = '<option value="">Chọn chủ đề</option>' +
+    CATS.map(c => `<option value="${c.slug}">${esc(c.label)}</option>`).join('');
+  sel.value = keep;
+}
+
+function showNewCategory() {
+  document.getElementById('newCategoryRow').style.display = 'flex';
+  document.getElementById('fNewCategory').focus();
+}
+function hideNewCategory() {
+  document.getElementById('newCategoryRow').style.display = 'none';
+  document.getElementById('fNewCategory').value = '';
+}
+async function addCategory() {
+  const label = document.getElementById('fNewCategory').value.trim();
+  if (!label) return;
+  try {
+    const r = await fetch('/api/admin/categories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ label }),
+    });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    if (!r.ok) { alert(d.error || 'Lỗi thêm chủ đề.'); return; }
+    CATS.push({ slug: d.slug, label: d.label });
+    CAT[d.slug] = d.label;
+    populateCategorySelect(d.slug);
+    hideNewCategory();
+  } catch (e) {
+    alert('Lỗi kết nối: ' + (e && e.message ? e.message : e));
+  }
+}
 
 let token = localStorage.getItem('sw_admin_token');
 let editingPost = null; // { slug, sha }
@@ -605,6 +648,7 @@ function showDashboard() {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   loadBookings();
+  loadCategories();
 }
 
 // ── TABS ──────────────────────────────────────────────────────────────
